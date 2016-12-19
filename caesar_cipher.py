@@ -13,7 +13,6 @@ for i in range(1, word_num):
 
 
 def caesar_cipher(message):
-
     """Encode or decode a string using the caesar cipher, a simple substitution cipher."""
 
     alphabet_lower = 'abcdefghijklmnopqrstuvwxyz'
