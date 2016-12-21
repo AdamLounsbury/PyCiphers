@@ -73,7 +73,7 @@ def caesar_cipher(message):
             return decode(curr_char, index_key)
 
     def caesar_message(ed, key_in):
-        """Sequentially append enciphered characters to an empty string. Returns a fully encoded/decoded message."""
+        """Sequentially append enciphered characters to an empty string. Return a fully encoded/decoded message."""
         transformed_message = ''
         for char in message:
             if char in alphabet_lower:
