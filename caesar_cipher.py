@@ -3,15 +3,6 @@
 
 from sys import argv
 
-text = ''
-script = argv
-word_num = len(argv)
-
-# append command line string arguments into a variable
-for i in range(1, word_num):
-    text += argv[i] + ' '
-
-
 def caesar_cipher(message):
     """Encode or decode a string using the caesar cipher, a simple substitution cipher."""
 
@@ -105,4 +96,15 @@ def caesar_cipher(message):
     encrypt_decrypt()
     
 if __name__ == '__main__':
+    text = ''
+    script = argv
+    word_num = len(argv)
+
+    # append command line string arguments into a variable
+    for k in range(1, word_num):
+        if k == (word_num - 1):
+            text += argv[k]
+        else:
+            text += argv[k] + ' '
+
     caesar_cipher(text)
