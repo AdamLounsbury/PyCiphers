@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 # ACL 2016 - alounsbu@alumni.uwo.ca
 
-def gcd(a,b):
+# These are functions are used in the affine cipher
+
+
+def gcd(a, b):
     while a != 0:
         a, b = b % a, a
     return b
 
-def modInverse(a, m):
 
+def mod_inverse(a, m):
     if gcd(a, m) != 1:
         return None
 
@@ -19,4 +22,3 @@ def modInverse(a, m):
         v1, v2, v3, u1, u2, u3 = (u1 - q * v1), (u2 - q * v2), (u3 - q * v3), v1, v2, v3
 
     return u1 % m
-
