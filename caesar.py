@@ -3,6 +3,7 @@
 
 from sys import argv
 
+
 def caesar_cipher(message):
     """Encode or decode a string using the caesar cipher, a simple substitution cipher."""
 
