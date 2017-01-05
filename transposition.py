@@ -5,8 +5,8 @@ from math import ceil
 from sys import argv
 
 
-def transpositional_cipher(txt):
-    """Encode or decode a string using a transposition cipher."""
+def transposition_cipher(txt):
+    """Encode or decode a string using the transposition cipher."""
 
     def encrypt_decrypt():
         """Retrieve cipher operation(encrypt/decrypt) and cipher key (if not using 'all') information from the user"""
@@ -79,4 +79,4 @@ if __name__ == '__main__':
         else:
             text += argv[k] + ' '
 
-    transpositional_cipher(text)
+    transposition_cipher(text)
