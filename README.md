@@ -14,5 +14,5 @@ Currently implemented ciphers include:
   * Substitution cipher
   * RSA cipher
 * Allow the user to encrypt a string using more than one cipher, applied any number of times (e.g. use the transposition cipher, followed by the affine cipher).
-* Built-in brute-force decryption options
-  * English detection capability
+* Built-in brute force decryption options
+* Detect english words in brute force decryption efforts and present candidate strings to the user
