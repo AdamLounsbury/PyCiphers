@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # ACL 2016 - alounsbu@alumni.uwo.ca
 
-from sys import argv, exit
+import random
+from sys import argv
 from crypto_funcs import *
 
 
@@ -51,9 +52,15 @@ def affine_cipher(txt):
                 len(char_set) - 1)
             key_get(mode)
         elif gcd(key_a, len(char_set)) != 1:
-            print 'Key A ({0}) and the symbol set size ({1}) are not relatively prime. Choose a different key.\n'.\
+            print 'Key A ({0}) and the symbol set size ({1}) are not relatively prime.\n'.\
                 format(key_a, len(char_set))
-            key_get(mode)
+
+            if mode == 'e':
+                rand_key = raw_input('Would you like a random key to be generated? (y/n): ')
+                if 'y' in rand_key:
+                    operation(mode, get_random_key())
+                else:
+                    key_get(mode)
         else:
             return True  # if the check worked, tell the operation method that it did
 
@@ -81,13 +88,21 @@ def affine_cipher(txt):
 
         print decrypt_text
 
+    def get_random_key():
+        while True:
+            key_a = random.randint(2, len(char_set))
+            key_b = random.randint(2, len(char_set))
+            if gcd(key_a, len(char_set)) == 1:
+                print 'Key is {0}'.format(key_a * len(char_set) + key_b)
+                return key_a * len(char_set) + key_b
+
     encrypt_decrypt()
 
 if __name__ == '__main__':
     if len(argv) == 1:
         text = raw_input("Enter a string to be encrypted/decrypted using the affine cipher\n> ")
         affine_cipher(text)
-    else:
+    else:  # handle input from command line
         text = ''
         script = argv
         word_num = len(argv)
