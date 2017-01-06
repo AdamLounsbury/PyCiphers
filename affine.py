@@ -29,10 +29,10 @@ def affine_cipher(txt):
     def operation(enc_dec, key):
         key_a, key_b = compute_keys(key)
 
-        if (('e' or 'E') in enc_dec) and check_keys(key_a, key_b, enc_dec) is True:
+        if (('e' or 'E') in enc_dec) and (check_keys(key_a, key_b, enc_dec) is True):
             return encrypt(key_a, key_b, txt)
-        else:
-            return decrypt()
+        elif 'd' in enc_dec:
+            return decrypt(key_a, key_b, txt)
 
     def compute_keys(key):
         key_a = key // len(char_set)
@@ -41,34 +41,45 @@ def affine_cipher(txt):
 
     def check_keys(key_a, key_b, mode):
         if key_a == 1 and mode == 'e':
-            print 'The affine cipher is very weak when key A computes to 1. Choose a different key.'
+            print 'The affine cipher is very weak when key A computes to 1. Choose a different key.\n'
             key_get(mode)
         elif key_b == 0 and mode == 'e':
-            print 'The affine cipher is very weak when key B computes to 0. Choose a different key.'
+            print 'The affine cipher is very weak when key B computes to 0. Choose a different key.\n'
             key_get(mode)
         elif key_a < 0 or (len(char_set) - 1 < key_b < 0):
-            print 'Key A must be greater than 0 and Key B must be between 0 and {0}'.format(len(char_set) - 1)
+            print 'Key A must be greater than 0 and Key B must be between 0 and {0}. Choose a different key.\n'.format(
+                len(char_set) - 1)
             key_get(mode)
         elif gcd(key_a, len(char_set)) != 1:
-            print 'Key A ({0}) and the symbol set size ({1}) are not relatively prime. Choose a different key.'.format(
-                key_a, len(char_set))
+            print 'Key A ({0}) and the symbol set size ({1}) are not relatively prime. Choose a different key.\n'.\
+                format(key_a, len(char_set))
             key_get(mode)
         else:
             return True  # if the check worked, tell the operation method that it did
 
     def encrypt(key_a, key_b, message):
         cipher_text = ''
+
         for char in message:
             if char in char_set:
                 char_index = char_set.find(char)
                 cipher_text += char_set[(char_index * key_a + key_b) % len(char_set)]
             else:
-                cipher_text += char # leave this character unencrypted
+                cipher_text += char  # leave this character unencrypted
 
         print cipher_text
 
-    def decrypt():
-        pass
+    def decrypt(key_a, key_b, message):
+        decrypt_text = ''
+
+        for char in message:
+            if char in char_set:
+                char_index = char_set.find(char)
+                decrypt_text += char_set[((char_index - key_b) * mod_inverse(key_a, len(char_set))) % len(char_set)]
+            else:
+                decrypt_text += char
+
+        print decrypt_text
 
     encrypt_decrypt()
 
