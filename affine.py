@@ -88,7 +88,7 @@ def affine_cipher(txt, user_option=None, user_key=None):
             else:
                 decrypt_text += char
 
-        print decrypt_text
+        return decrypt_text
 
     def get_random_key():
         while True:
