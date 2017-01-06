@@ -28,9 +28,8 @@ def affine_cipher(txt):
 
     def operation(enc_dec, key):
         key_a, key_b = compute_keys(key)
-        check_keys(key_a, key_b, enc_dec)
 
-        if ('e' or 'E') in enc_dec:
+        if (('e' or 'E') in enc_dec) and check_keys(key_a, key_b, enc_dec) is True:
             return encrypt(key_a, key_b, txt)
         else:
             return decrypt()
@@ -44,16 +43,18 @@ def affine_cipher(txt):
         if key_a == 1 and mode == 'e':
             print 'The affine cipher is very weak when key A computes to 1. Choose a different key.'
             key_get(mode)
-        if key_b == 0 and mode == 'e':
+        elif key_b == 0 and mode == 'e':
             print 'The affine cipher is very weak when key B computes to 0. Choose a different key.'
             key_get(mode)
-        if key_a < 0 or (len(char_set) - 1 < key_b < 0):
+        elif key_a < 0 or (len(char_set) - 1 < key_b < 0):
             print 'Key A must be greater than 0 and Key B must be between 0 and {0}'.format(len(char_set) - 1)
             key_get(mode)
-        if gcd(key_a, len(char_set)) != 1:
+        elif gcd(key_a, len(char_set)) != 1:
             print 'Key A ({0}) and the symbol set size ({1}) are not relatively prime. Choose a different key.'.format(
                 key_a, len(char_set))
             key_get(mode)
+        else:
+            return True  # if the check worked, tell the operation method that it did
 
     def encrypt(key_a, key_b, message):
         cipher_text = ''
@@ -63,6 +64,7 @@ def affine_cipher(txt):
                 cipher_text += char_set[(char_index * key_a + key_b) % len(char_set)]
             else:
                 cipher_text += char # leave this character unencrypted
+
         print cipher_text
 
     def decrypt():
