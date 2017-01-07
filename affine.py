@@ -14,8 +14,7 @@ def affine_cipher(txt, user_option=None, user_key=None):
         while True:
             option = raw_input("Encrypt/Decrypt (e/d)?: ")
             if option == 'd' or option == 'e':
-                print key_get(option)
-                break
+                return key_get(option)
             else:
                 print "Please choose a valid option for decryption/encryption.\n"
 
@@ -26,16 +25,6 @@ def affine_cipher(txt, user_option=None, user_key=None):
                 return operation(option, key)
             else:
                 print "Please enter an integer value for the key.\n"
-
-    def operation(enc_dec, key):
-        key_a, key_b = compute_keys(key)
-
-        if ('e' or 'E') in enc_dec and (user_option is not None):
-            return encrypt(key_a, key_b, txt)
-        elif (('e' or 'E') in enc_dec) and (check_keys(key_a, key_b, enc_dec) is True) and (user_option is None):
-            return encrypt(key_a, key_b, txt)
-        elif 'd' in enc_dec:
-            return decrypt(key_a, key_b, txt)
 
     def compute_keys(key):
         key_a = key // len(char_set)
@@ -60,11 +49,21 @@ def affine_cipher(txt, user_option=None, user_key=None):
             if mode == 'e':
                 rand_key = raw_input("Would you like a random key to be generated? (y/n): ")
                 if 'y' in rand_key:
-                    operation(mode, get_random_key())
+                    return operation(mode, get_random_key())
                 else:
                     key_get(mode)
         else:
             return True  # if the check worked, tell the operation method that it did
+
+    def operation(enc_dec, key):
+        key_a, key_b = compute_keys(key)
+
+        if ('e' or 'E') in enc_dec and (user_option is not None):
+            print encrypt(key_a, key_b, txt)
+        elif (('e' or 'E') in enc_dec) and (check_keys(key_a, key_b, enc_dec) is True) and (user_option is None):
+            print encrypt(key_a, key_b, txt)
+        elif 'd' in enc_dec:
+            print decrypt(key_a, key_b, txt)
 
     def encrypt(key_a, key_b, message):
         cipher_text = ""
@@ -101,7 +100,7 @@ def affine_cipher(txt, user_option=None, user_key=None):
     if (user_option is not None) and (user_key is not None):
         return operation(user_option, user_key)
     else:
-        encrypt_decrypt()
+        return encrypt_decrypt()
 
 if __name__ == "__main__":
     if len(argv) == 1:
