@@ -4,7 +4,7 @@
 from sys import argv
 
 
-def caesar_cipher(message):
+def caesar_cipher(message, user_option=None, user_key=None):
     """Encode or decode a string using the caesar cipher, a simple substitution cipher."""
 
     alphabet_lower = 'abcdefghijklmnopqrstuvwxyz'
@@ -90,22 +90,29 @@ def caesar_cipher(message):
         """Run the cipher on the string for either 'all' cipher keys or a single user-specified key"""
         if key == 'all':
             for j in range(len(alphabet_lower)):
-                print j, ': ' + caesar_message(option, j)
+                print str(j) + ': ' + caesar_message(option, j)
         elif key == int(key):
             print caesar_message(option, key)
 
-    encrypt_decrypt()
+    if (user_option is not None) and (user_key is not None):
+        return run_cipher(user_option, user_key)
+    else:
+        encrypt_decrypt()
     
 if __name__ == '__main__':
-    text = ''
-    script = argv
-    word_num = len(argv)
+    if len(argv) == 1:
+        text = raw_input("Enter a string to be encrypted/decrypted using the caesar cipher\n> ")
+        caesar_cipher(text)
+    else:  # handle input from command line
+        text = ""
+        script = argv
+        word_num = len(argv)
 
-    # append command line string arguments into a variable
-    for k in range(1, word_num):
-        if k == (word_num - 1):
-            text += argv[k]
-        else:
-            text += argv[k] + ' '
+        # append command line string arguments into a variable
+        for k in range(1, word_num):
+            if k == (word_num - 1):
+                text += argv[k]
+            else:
+                text += argv[k] + " "
 
-    caesar_cipher(text)
+        caesar_cipher(text)
