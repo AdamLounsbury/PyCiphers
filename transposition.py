@@ -5,7 +5,7 @@ from math import ceil
 from sys import argv
 
 
-def transposition_cipher(txt):
+def transposition_cipher(txt, user_option=None, user_key=None):
     """Encode or decode a string using the transposition cipher."""
 
     def encrypt_decrypt():
@@ -65,18 +65,25 @@ def transposition_cipher(txt):
         else:
             return decode()
 
-    encrypt_decrypt()
+    if (user_option is not None) and (user_key is not None):
+        return operation(user_option, user_key)
+    else:
+        encrypt_decrypt()
 
 if __name__ == '__main__':
-    text = ''
-    script = argv
-    word_num = len(argv)
+    if len(argv) == 1:
+        text = raw_input("Enter a string to be encrypted/decrypted using the caesar cipher\n> ")
+        transposition_cipher(text)
+    else:  # handle input from command line
+        text = ""
+        script = argv
+        word_num = len(argv)
 
-    # append command line string arguments into a variable
-    for k in range(1, word_num):
-        if k == (word_num - 1):
-            text += argv[k]
-        else:
-            text += argv[k] + ' '
+        # append command line string arguments into a variable
+        for k in range(1, word_num):
+            if k == (word_num - 1):
+                text += argv[k]
+            else:
+                text += argv[k] + " "
 
-    transposition_cipher(text)
+        transposition_cipher(text)
