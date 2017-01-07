@@ -7,7 +7,7 @@ from sys import argv
 def caesar_cipher(message, user_option=None, user_key=None):
     """Encode or decode a string using the caesar cipher, a simple substitution cipher."""
 
-    alphabet_lower = 'abcdefghijklmnopqrstuvwxyz'
+    alphabet_lower = "abcdefghijklmnopqrstuvwxyz"
     alphabet_upper = alphabet_lower.upper()
 
     def encrypt_decrypt():
@@ -90,7 +90,7 @@ def caesar_cipher(message, user_option=None, user_key=None):
         """Run the cipher on the string for either 'all' cipher keys or a single user-specified key"""
         if key == 'all':
             for j in range(len(alphabet_lower)):
-                print str(j) + ': ' + caesar_message(option, j)
+                print str(j) + ": " + caesar_message(option, j)
         elif key == int(key):
             print caesar_message(option, key)
 
