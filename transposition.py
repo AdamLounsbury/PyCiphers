@@ -28,37 +28,37 @@ def transposition_cipher(txt):
 
     def operation(enc_dec, transpos_key):
 
-        strlen = len(txt) # length of the input text
-        col_size = int(ceil(float(strlen) / transpos_key)) # encoding column size
+        str_len = len(txt) # length of the input text
+        col_size = int(ceil(float(str_len) / transpos_key)) # encoding column size
 
         def encode():
-            encode_newstr = [''] * transpos_key
+            encode_new_str = [''] * transpos_key
 
             for i in range(transpos_key):
                 col_loc = 0  # current location in a column
                 for j in range(col_size):
-                    if (i + col_loc) < strlen:
-                        encode_newstr[i] += txt[i + col_loc]
+                    if (i + col_loc) < str_len:
+                        encode_new_str[i] += txt[i + col_loc]
                         col_loc += transpos_key
 
-            print ''.join(encode_newstr)
+            print ''.join(encode_new_str)
 
         def decode():
-            nochar = (col_size * transpos_key) - strlen  # number of 'shaded' boxes
-            decode_newstr = [''] * col_size
+            no_char = (col_size * transpos_key) - str_len  # number of 'shaded' boxes
+            decode_new_str = [''] * col_size
 
             row = 0
             col = 0
 
             for char in txt:
-                decode_newstr[col] += char
+                decode_new_str[col] += char
                 col += 1
 
-                if (col == col_size) or (col == col_size - 1 and row >= transpos_key - nochar):
+                if (col == col_size) or (col == col_size - 1 and row >= transpos_key - no_char):
                     col = 0
                     row += 1
 
-            print ''.join(decode_newstr)
+            print ''.join(decode_new_str)
 
         if ('e' or 'E') in enc_dec:
             return encode()
