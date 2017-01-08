@@ -1,33 +1,61 @@
 
 from sys import argv
 
-char_set_lower = "abcdefghijklmnopqrstuvwxyz"
-char_set_upper = char_set_lower.upper()
-
-key = 'butcheroomba'
+char_set = "abcdefghijklmnopqrstuvwxyz"
 
 
 def vigenere_cipher(message, user_option=None, user_key=None):
 
-    cipher_text = ""
-    key_index = 0
+    def encrypt_decrypt_prompt():
+        while True:
+            option = raw_input("Encrypt/Decrypt (e/d)?: ")
+            if option == 'd' or option == 'e':
+                return key_get(option)
+            else:
+                print "Please choose a valid option for decryption/encryption.\n"
 
-    for char in message:
-        if char in char_set_lower:
-            key_let_index = char_set_lower.find(key[key_index])  # example: '2' for b
-            msg_let_index = char_set_lower.find(char)  # example: '20' for t
-            encode_text = (msg_let_index + key_let_index) % len(char_set_lower)
+    def key_get(option):
+        while True:
+            key = raw_input("Enter an encryption/decryption key: ")
+            key = key.replace(" ", "")  # in case the user enters a key containing spaces
+            key = key.lower()  # in case the user input capital letters
+            if key.isalpha():
+                return encrypt_decrypt(option, key)
+            else:
+                print "Please enter a key containing only letters.\n"
 
-            cipher_text += char_set_lower[encode_text]
-            key_index += 1
+    def encrypt_decrypt(option, key):
+        cipher_text = ""
+        key_index = 0
 
-            if key_index == len(key):
-                key_index = 0
+        for char in message:
+            if char.lower() in char_set:  # alphabet provided is all lower case - used to search for capital letters
+                msg_let_index = char_set.find(char.lower())    # ex: '20' for t
+                key_let_index = char_set.find(key[key_index])  # ex: '2' for b
 
-        else:
-            cipher_text += char
+                if option == 'e':
+                    encode_text = (msg_let_index + key_let_index) % len(char_set)
+                elif option == 'd':
+                    encode_text = (msg_let_index - key_let_index) % len(char_set)
+                
+                if char.islower():
+                    cipher_text += char_set[encode_text]
+                elif char.isupper():
+                    cipher_text += char_set[encode_text].upper()
 
-    print cipher_text
+                key_index += 1
+                if key_index == len(key):  # when the end of the key is reached, wrap back to the start
+                    key_index = 0
+
+            else:
+                cipher_text += char
+
+        print cipher_text
+
+    if (user_option is not None) and (user_key is not None):
+        return encrypt_decrypt(user_option, user_key)
+    else:
+        return encrypt_decrypt_prompt()
 
 
 if __name__ == "__main__":
