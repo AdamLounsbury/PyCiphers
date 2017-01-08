@@ -38,7 +38,10 @@ $RECYCLE.BIN/
 .TemporaryItems
 .Trashes
 .VolumeIcon.icns
+
+#Pycharm related files
 .idea
+*.pyc
 
 # Directories potentially created on remote AFP share
 .AppleDB
