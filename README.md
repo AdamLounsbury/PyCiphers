@@ -7,6 +7,7 @@ Currently implemented ciphers include:
 * Caesar cipher
 * Transposition cipher
 * Affine cipher
+* Vigenère cipher
 
 # How to use
 Each script may be executed without arguments. The user will then be prompted for a message to be encrypted/decrypted, followed by a key. 
@@ -14,7 +15,6 @@ Alternatively, each script's main method may be called, using up to 3 arguments 
 
 # To-do
 * Implement the following ciphers:
-  * Vigenère cipher
   * Substitution cipher
   * RSA cipher
 * Allow the user to encrypt a string using more than one cipher, applied any number of times (e.g. use the transposition cipher, followed by the affine cipher).
