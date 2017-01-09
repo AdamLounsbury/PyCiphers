@@ -17,6 +17,7 @@ If neither the encryption option or key is provided, the user will be prompted f
 
 Example:
 
+# Python 2.7.11
 \>>> from vigenere import * <br />
 \>>> vigenere_cipher('This is a test message', 'e', 'blastoise') <br />
 Usik bg i lite mwlgiyi
