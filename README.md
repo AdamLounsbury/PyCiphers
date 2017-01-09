@@ -19,7 +19,7 @@ Example:
 
 \>>> from vigenere import * <br />
 \>>> vigenere_cipher('This is a test message', 'e', 'blastoise') <br />
-\Usik bg i lite mwlgiyi
+Usik bg i lite mwlgiyi
 
 
 # To-do
