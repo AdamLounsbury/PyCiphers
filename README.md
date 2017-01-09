@@ -11,7 +11,15 @@ Currently implemented ciphers include:
 
 # How to use
 Each script may be executed without arguments. The user will then be prompted for a message to be encrypted/decrypted, followed by a key. 
-Alternatively, each script's main method may be called, using up to 3 arguments (in the following order): message, encryption option, key. If neither the encryption option or key is provided, the user will be prompted for them, otherwise the cipher will immediately begin.
+Alternatively, each script's main method may be called, using up to 3 arguments (in the following order): message, encryption option, key. Depending on the cipher being used, the key may be an integer or a string. 
+
+If neither the encryption option or key is provided, the user will be prompted for them. Otherwise, the cipher will immediately begin operating.
+
+Example:
+>>> from vigenere import *
+>>> vigenere_cipher('This is a test message', 'e', 'blastoise')
+Usik bg i lite mwlgiyi
+
 
 # To-do
 * Implement the following ciphers:
