@@ -7,22 +7,48 @@ char_set = "abcdefghijklmnopqrstuvwxyz"
 def vigenere_cipher(message, user_option=None, user_key=None):
 
     def encrypt_decrypt_prompt():
-        while True:
-            option = raw_input("Encrypt/Decrypt (e/d)?: ")
-            if option == 'd' or option == 'e':
-                return key_get(option)
-            else:
-                print "Please choose a valid option for decryption/encryption.\n"
+        option = raw_input("Encrypt/Decrypt (e/d)?: ")
+        if check_option(option):
+            return key_get(option)
+        else:
+            return encrypt_decrypt_prompt()
 
     def key_get(option):
-        while True:
-            key = raw_input("Enter an encryption/decryption key: ")
-            key = key.replace(" ", "")  # in case the user enters a key containing spaces
+        key = raw_input("Enter an encryption/decryption key: ")
+        key = check_key(key)
+        if key:
+            return encrypt_decrypt(option, key)
+        else:
+            return key_get(option)
+
+    def check_option(option):
+        if option.startswith('E') or option.startswith('e'):
+            option = option.lower()
+            return option
+        elif option.startswith('D') or option.startswith('d'):
+            option = option.lower()
+            return option
+        else:
+            print 'Invalid operation detected. Please enter a valid operation (encryption/decryption).'
+            return False
+
+    def check_key(key):
+
+        try:
+            key = key.replace(" ", "")  # in case the user enters a string key containing spaces
+        except AttributeError:
+            print "Please enter a string key."
+            return False
+
+        if not isinstance(key, str):
+            print "Please enter a string key."
+            return False
+        elif not key.isalpha():
+            print "Please enter a string key containing only letters."
+            return False
+        else:
             key = key.lower()  # in case the user input capital letters
-            if key.isalpha():
-                return encrypt_decrypt(option, key)
-            else:
-                print "Please enter a key containing only letters.\n"
+            return key
 
     def encrypt_decrypt(option, key):
         cipher_text = ""
@@ -33,9 +59,9 @@ def vigenere_cipher(message, user_option=None, user_key=None):
                 msg_let_index = char_set.find(char.lower())    # ex: '20' for t
                 key_let_index = char_set.find(key[key_index])  # ex: '2' for b
 
-                if option == 'e':
+                if option.startswith('e'):
                     encode_text = (msg_let_index + key_let_index) % len(char_set)
-                elif option == 'd':
+                elif option.startswith('d'):
                     encode_text = (msg_let_index - key_let_index) % len(char_set)
                 
                 if char.islower():
@@ -53,7 +79,8 @@ def vigenere_cipher(message, user_option=None, user_key=None):
         print cipher_text
 
     if (user_option is not None) and (user_key is not None):
-        return encrypt_decrypt(user_option, user_key)
+        if check_option(user_option) and check_key(user_key):
+            encrypt_decrypt(user_option, user_key)
     else:
         return encrypt_decrypt_prompt()
 
