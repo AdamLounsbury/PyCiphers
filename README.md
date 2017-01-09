@@ -16,9 +16,10 @@ Alternatively, each script's main method may be called, using up to 3 arguments 
 If neither the encryption option or key is provided, the user will be prompted for them. Otherwise, the cipher will immediately begin operating.
 
 Example:
->>> from vigenere import *
->>> vigenere_cipher('This is a test message', 'e', 'blastoise')
-Usik bg i lite mwlgiyi
+
+\>>> from vigenere import * <br />
+\>>> vigenere_cipher('This is a test message', 'e', 'blastoise') <br />
+\Usik bg i lite mwlgiyi
 
 
 # To-do
