@@ -7,8 +7,6 @@ import math
 import random
 
 
-# Affine cipher funcs
-
 def gcd(a, b):
     while a != 0:
         a, b = b % a, a
@@ -37,9 +35,6 @@ def is_prime(num):
         if num % i == 0:
             return False
     return True  # loop did not find a factor
-
-
-# RSA cipher funcs
 
 
 def rabin_miller(num):
