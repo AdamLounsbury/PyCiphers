@@ -3,7 +3,6 @@
 
 # These are functions are used in the affine cipher and RSA cipher
 
-import math
 import random
 
 
@@ -17,24 +16,14 @@ def mod_inverse(a, m):
     if gcd(a, m) != 1:
         return None
 
-    u1, u2, u3 = 1, 0, a
-    v1, v2, v3 = 0, 1, m
+    x1, x2, x3 = 1, 0, a
+    y1, y2, y3 = 0, 1, m
 
-    while v3 != 0:
-        q = u3 // v3
-        v1, v2, v3, u1, u2, u3 = (u1 - q * v1), (u2 - q * v2), (u3 - q * v3), v1, v2, v3
+    while y3 != 0:
+        q = x3 // y3
+        y1, y2, y3, x1, x2, x3 = (x1 - q * y1), (x2 - q * y2), (x3 - q * y3), y1, y2, y3
 
-    return u1 % m
-
-
-def is_prime(num):
-    if num < 2:
-        return False
-
-    for i in range(2, int(math.sqrt(num)) + 1):
-        if num % i == 0:
-            return False
-    return True  # loop did not find a factor
+    return x1 % m
 
 
 def rabin_miller(num):
@@ -81,10 +70,10 @@ def is_prime(num):
         if num % prime == 0:
             return False
 
-    return rabin_miller(num)  # if none of the above works, call rabin miller algorithm
+    return rabin_miller(num)  # if none of the above works, call rabin-miller algorithm
 
 
-def generate_prime(key_size=1024):
+def generate_prime(key_size):
     while True:
         num = random.randrange(2 ** (key_size - 1), 2 ** key_size)
         if is_prime(num):
