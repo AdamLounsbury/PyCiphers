@@ -22,11 +22,18 @@ from vigenere import *
 vigenere_cipher('This is a test message', 'e', 'blastoise')
 Usik bg i lite mwlgiyi
 ```
+or
+
+```bash
+python vigenere.py encrypt this message
+Encrypt/Decrypt (e/d)?: e
+Enter an encryption/decryption key: blastoise
+fycjrdb lljd mwlgiyi
+```
 
 # To-do
 * Implement the following ciphers:
   * Substitution cipher
-  * RSA cipher
 * Allow the user to encrypt a string using more than one cipher, applied any number of times (e.g. use the transposition cipher, followed by the affine cipher).
 * Built-in brute force decryption options
 * Detect english words in brute force decryption efforts and present candidate strings to the user
