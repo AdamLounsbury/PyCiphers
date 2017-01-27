@@ -51,7 +51,7 @@ def cipher_run(choice, option):
         sys.exit()
     else:
         print "Invalid choice"
-        return cipher_run(choice)
+        return cipher_run(choice, option)
 
 
 def single_encryption_decryption(option):
