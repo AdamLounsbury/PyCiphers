@@ -26,7 +26,7 @@ class CipherFuncs(object):
             self.option = self.option.lower()
             return self.option
         else:
-            print 'Invalid operation detected. Please enter a valid operation (encryption/decryption).'
+            print '\nInvalid operation detected. Please enter a valid operation (encryption/decryption).'
             return False
 
     def key_get(self):
