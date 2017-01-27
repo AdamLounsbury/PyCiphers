@@ -12,7 +12,7 @@ def vigenere(text="", option="", key=""):
         text, option, key = vigenere_cipher.script_call()
         return encrypt_decrypt(text, option, key)
 
-    elif not text and not key:  # if vigenere is called from main.py, enc/dec is specified in the menu choice
+    elif option and not text and not key:  # if vigenere is called from main.py, enc/dec is specified in the menu choice
         text, key = vigenere_cipher.main_call()
         return encrypt_decrypt(text, option, key)
 
