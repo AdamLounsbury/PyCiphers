@@ -12,11 +12,11 @@ def main():
     main_choice = raw_input("> ")
 
     if main_choice == '1':
-        return single_encryption()
+        return single_encryption_decryption('e')
     elif main_choice == '2':
         return sequential_encryption()
     elif main_choice == '3':
-        return single_decryption()
+        return single_encryption_decryption('d')
     elif main_choice == '4':
         return code_break()
     elif main_choice == '5' or main_choice.startswith('q'):
@@ -37,38 +37,31 @@ def single_ciphers():
     print "5) Substitution\n"
 
 
-def cipher_run(cipher_choice, option):
-    if cipher_choice == 4:
+def cipher_run(choice, option):
+    if choice == 1:
+        pass
+    elif choice == 4:
         try:
-            from vigenere_test import vigenere
+            from vigenere import vigenere
             return vigenere(option=option)
         except ImportError:
-            print "Couldn't import the vigenere cipher module. Has it been renamed or moved?"
+            print "Couldn't import the vigenere module. Has it been renamed or moved?"
             sys.exit()
-    elif cipher_choice.startswith('q'):
+    elif choice.startswith('q'):
         sys.exit()
     else:
         print "Invalid choice"
-        if option == 'e':
-            return single_encryption()
-        else:
-            return single_decryption()
+        return cipher_run(choice)
 
 
-def single_encryption():
+def single_encryption_decryption(option):
     single_ciphers()
-    cipher_choice = input("> ")
-    return cipher_run(cipher_choice, 'e')
+    choice = input("> ")
+    return cipher_run(choice, option)
 
 
 def sequential_encryption():
     pass
-
-
-def single_decryption():
-    single_ciphers()
-    cipher_choice = input("> ")
-    return cipher_run(cipher_choice, 'd')
 
 
 def code_break():
