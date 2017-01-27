@@ -1,7 +1,8 @@
 
+import string
 from sys import argv
 
-char_set = "abcdefghijklmnopqrstuvwxyz"
+char_set = string.ascii_lowercase
 
 
 def vigenere_cipher(message, user_option=None, user_key=None):
