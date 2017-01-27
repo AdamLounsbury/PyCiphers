@@ -1,5 +1,6 @@
 import sys
 
+
 def main():
     print "\nWelcome! Please input a numbered option below (or type 'help' for examples)\n"
     print "1) Single encryption"
@@ -8,19 +9,19 @@ def main():
     print "4) Brute-force code breaking"
     print "5) Quit\n"
 
-    choice = raw_input("> ")
+    main_choice = raw_input("> ")
 
-    if choice == '1':
+    if main_choice == '1':
         return single_encryption()
-    elif choice == '2':
+    elif main_choice == '2':
         return sequential_encryption()
-    elif choice == '3':
+    elif main_choice == '3':
         return single_decryption()
-    elif choice == '4':
+    elif main_choice == '4':
         return code_break()
-    elif choice == '5' or choice.startswith('q'):
+    elif main_choice == '5' or main_choice.startswith('q'):
         sys.exit()
-    elif choice.startswith('h') or choice.startswith('H'):
+    elif main_choice.startswith('h') or main_choice.startswith('H'):
         return examples()
     else:
         print "Invalid choice"
@@ -33,32 +34,41 @@ def single_ciphers():
     print "2) Transposition"
     print "3) Affine"
     print "4) Vigenere"
-    print "5) Substitution"
+    print "5) Substitution\n"
 
 
-def cipher_run(choice):
-    if choice == 1:
-        pass
-    elif choice == 4:
-        pass
-    elif choice.startswith('q'):
+def cipher_run(cipher_choice, option):
+    if cipher_choice == 4:
+        try:
+            from vigenere_test import vigenere
+            return vigenere(option=option)
+        except ImportError:
+            print "Couldn't import the vigenere cipher module. Has it been renamed or moved?"
+            sys.exit()
+    elif cipher_choice.startswith('q'):
         sys.exit()
     else:
         print "Invalid choice"
-        return cipher_run(choice)
+        if option == 'e':
+            return single_encryption()
+        else:
+            return single_decryption()
 
 
 def single_encryption():
     single_ciphers()
-    choice = input("> ")
-    return cipher_run(choice)
+    cipher_choice = input("> ")
+    return cipher_run(cipher_choice, 'e')
+
 
 def sequential_encryption():
     pass
 
 
 def single_decryption():
-    pass
+    single_ciphers()
+    cipher_choice = input("> ")
+    return cipher_run(cipher_choice, 'd')
 
 
 def code_break():

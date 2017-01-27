@@ -2,10 +2,11 @@
 # ACL 2016 - alounsbu@alumni.uwo.ca
 
 import random
+import string
 from sys import argv
 from crypto_funcs import *
 
-char_set = """ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]=^_`abcdefghijklmnopqrstuvwxyz{|}~"""
+char_set = string.printable
 
 
 def affine_cipher(txt, user_option=None, user_key=None):

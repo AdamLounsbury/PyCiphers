@@ -1,14 +1,15 @@
 #!/usr/bin/env python
 # ACL 2016 - alounsbu@alumni.uwo.ca
 
+import string
 from sys import argv
 
 
 def caesar_cipher(message, user_option=None, user_key=None):
     """Encode or decode a string using the caesar cipher, a simple substitution cipher."""
 
-    alphabet_lower = "abcdefghijklmnopqrstuvwxyz"
-    alphabet_upper = alphabet_lower.upper()
+    alphabet_lower = string.ascii_lowercase
+    alphabet_upper = string.ascii_uppercase
 
     def encrypt_decrypt():
         """Retrieve cipher operation(encrypt/decrypt) and cipher key (if not using 'all') information from the user"""
