@@ -7,25 +7,9 @@ char_set = string.ascii_lowercase
 
 def vigenere(text="", option="", key=""):
     vigenere_cipher = CipherFuncs(text, option, key)
+    text, option, key = vigenere_cipher.call_source()
 
-    if not text and not option and not key:  # if vigenere is run as a script with no arguments
-        text, option, key = vigenere_cipher.script_call()
-        return encrypt_decrypt(text, option, key)
-
-    elif option and not text and not key:  # if vigenere is called from main.py, enc/dec is specified in the menu choice
-        text, key = vigenere_cipher.main_call()
-        return encrypt_decrypt(text, option, key)
-
-    elif text and not option and not key: # if vigenere is called directly from a CLI with an included string
-        option, key = vigenere_cipher.cli_call()
-        return encrypt_decrypt(text, option, key)
-
-    else:  # if vigenere is run in the shell with all arguments provided
-        valid_choices = vigenere_cipher.shell_call()
-        if valid_choices:
-            return encrypt_decrypt(text, option, key)
-        else:
-            print "Try again!\n"
+    return encrypt_decrypt(text, option, key)
 
 
 def encrypt_decrypt(message, option, key):
