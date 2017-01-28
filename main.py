@@ -1,4 +1,5 @@
 import sys
+import vigenere, transposition, affine, caesar, substitution
 
 
 def main():
@@ -39,14 +40,15 @@ def single_ciphers():
 
 def cipher_run(choice, option):
     if choice == 1:
-        pass
+        return caesar.caesar(option=option)
+    elif choice == 2:
+        return transposition.transposition(option=option)
+    elif choice == 3:
+        return affine.affine(option=option)
     elif choice == 4:
-        try:
-            from vigenere import vigenere
-            return vigenere(option=option)
-        except ImportError:
-            print "Couldn't import the vigenere module. Has it been renamed or moved?"
-            sys.exit()
+        return vigenere.vigenere(option=option)
+    elif choice == 5:
+        return substitution.substitution(option=option)
     elif choice.startswith('q'):
         sys.exit()
     else:
