@@ -49,6 +49,9 @@ class CipherFuncs(object):
                 return self.key
             # 3 cases: affine, int, and str
 
+    def rand_key(self):
+        pass
+
     def script_call(self):
         x = self.get_message()
         y = self.encrypt_decrypt_prompt()
@@ -68,13 +71,27 @@ class CipherFuncs(object):
     def shell_call(self):
         x = self.check_option()
         y = self.check_key()
-        if x and y:  # check if the option and key are valid inputs
+        if x and y:  # both option and key must have received valid inputs
             return True
         else:
             return False
 
-    def rand_key(self):
-        pass
+    def call_source(self):
+        if not self.text and not self.option and not self.key:  # if cipher is run as a script with no arguments
+            self.text, self.option, self.key = self.script_call()
+            return self.text, self.option, self.key
+        elif self.option and not self.text and not self.key:  # cipher called from main.py, so enc/dec is specified
+            self.text, self.key = self.main_call()
+            return self.text, self.option, self.key
+        elif self.text and not self.option and not self.key:  # cipher called directly from CLI with an included string
+            self.option, self.key = self.cli_call()
+            return self.text, self.option, self.key
+        else:                                                 # cipher run in the shell with all arguments provided
+            valid_choices = self.shell_call()
+            if valid_choices:
+                return self.text, self.option, self.key
+            else:
+                print "Try again!\n"
 
 
 def cmd_handles(*args):
