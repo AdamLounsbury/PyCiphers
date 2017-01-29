@@ -1,39 +1,47 @@
 # Ciphers
-Presented here are a variety of ciphers, each with encryption and decryption ability. 
+Presented here are a variety of cryptographic ciphers, each with encryption and decryption ability.
 
-Each script can take a string and encrypt/decrypt that string using a user-provided key. With some ciphers, the user may choose to use a randomly generated encryption key (e.g. affine).
+Each cipher accepts a string and encrypts/decrypts that string using a key. The user may choose to use a randomly generated encryption key by inputting 'random' as the key.
 
-Currently implemented ciphers include:
+Implemented ciphers include:
 * Caesar cipher
 * Transposition cipher
 * Affine cipher
 * Vigenère cipher
+* Substitution cipher
 
 # How to use
-Each script may be executed without arguments. The user will then be prompted for a message to be encrypted/decrypted, followed by a key. 
-Alternatively, each script's main method may be called, using up to 3 arguments (in the following order): message, encryption option, key (or key size). Depending on the cipher being used, the key may be an integer or a string. 
+Each cipher may be executed without arguments. The user will then be prompted for a message, whether they want the message encrypted or decrypted, and a key.
+Alternatively, each cipher may be called by name and optionally accepts 3 arguments (in the following order): `message`, `decrypt/encrypt`, `key` (or key size). Depending on the cipher being used, the key format may differ.
 
-If neither the encryption option or key is provided, the user will be prompted for them. Otherwise, the cipher will immediately begin operating.
+If cipher operation and/or key are not provided, the user will be prompted for them. Otherwise, the cipher will immediately begin operating.
 
-Example:
+Examples:
 
 ```python
-from vigenere import *
-vigenere_cipher('This is a test message', 'e', 'blastoise')
-Usik bg i lite mwlgiyi
+from affine import affine
+vigenere('This is a test message', 'e', 1696)
+L0ig ig U yBgy ~BggU.B
 ```
-or
 
 ```bash
-python vigenere.py encrypt this message
+./vigenere.py encrypt this message
 Encrypt/Decrypt (e/d)?: e
 Enter an encryption/decryption key: blastoise
 fycjrdb lljd mwlgiyi
 ```
 
+```bash
+python transposition.py
+Enter a string to be encrypted/decrypted using the transposition cipher
+> cryptography is cool
+Encrypt/Decrypt (e/d)?: e
+Enter an encryption/decryption key: 6
+cg orrilyaspp thcoyo
+```
+
+Alternatively, run main.py from a command line for a user-friendly interface, which also allows access to additional options for sequential encryption and code breaking.
+
 # To-do
-* Implement the following ciphers:
-  * Substitution cipher
-* Allow the user to encrypt a string using more than one cipher, applied any number of times (e.g. use the transposition cipher, followed by the affine cipher).
-* Built-in brute force decryption options
+* Implement built-in brute force decryption
 * Detect english words in brute force decryption efforts and present candidate strings to the user
