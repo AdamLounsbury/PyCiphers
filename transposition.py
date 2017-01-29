@@ -3,14 +3,16 @@
 
 import math
 import sys
-from cipher_funcs import CipherFuncs, cmd_handles
+from cipher_funcs import CipherFuncs, cmd_handles, clipboard
 
 
 def transposition(text="", option="", key=""):
     transposition_cipher = CipherFuncs(text, option, key)
     text, option, key = transposition_cipher.call_source()
 
-    return encrypt_decrypt(text, option, int(key))  # cast str key to int
+    cipher_text = encrypt_decrypt(text, option, int(key))  # cast str key to int
+    print cipher_text
+    clipboard(cipher_text)
 
 
 def encrypt_decrypt(message, option, key):
@@ -33,7 +35,7 @@ def encrypt(message, col_size, key, str_len):
                 encode_new_str[i] += message[i + col_loc]
                 col_loc += key
 
-    print ''.join(encode_new_str)
+    return ''.join(encode_new_str)
 
 
 def decrypt(message, col_size, key, str_len):
@@ -51,7 +53,7 @@ def decrypt(message, col_size, key, str_len):
             col = 0
             row += 1
 
-    print ''.join(decode_new_str)
+    return ''.join(decode_new_str)
 
 if __name__ == "__main__":
     try:
