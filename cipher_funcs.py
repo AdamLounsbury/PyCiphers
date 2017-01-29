@@ -51,7 +51,10 @@ class CipherFuncs(object):
             for the function name and handle key input errors with respect to each cipher's key requirements"""
         frame = str(inspect.stack())
 
-        if 'vigenere' in frame:
+        if self.key == 'random':
+            return self.rand_key()
+
+        elif 'vigenere' in frame:
             try:
                 self.key = self.key.replace(" ", "")  # in case the user enters a string key containing spaces
             except AttributeError:
@@ -59,6 +62,7 @@ class CipherFuncs(object):
                 return self.key_get()
             else:
                 return self.key
+
         elif 'transposition' in frame:
             try:
                 int(self.key)
@@ -78,8 +82,8 @@ class CipherFuncs(object):
                     print "The affine cipher is very weak when key B computes to 0. Choose a different key.\n"
                     return self.key_get()
                 elif key_a < 0 or self.char_set_len - 1 < key_b < 0:
-                    print "Key A must be greater than 0 and Key B must be between 0 and {}. Choose a different key.\n"\
-                        .format(self.char_set_len - 1)
+                    print "Key A must be greater than 0 and Key B must be between 0 and {}. Choose a different " \
+                          "key.\n".format(self.char_set_len - 1)
                     return self.key_get()
                 elif crypto_funcs.gcd(key_a, self.char_set_len) != 1:
                     print "Key A ({}) and the symbol set size ({}) are not relatively prime.\n". \
@@ -98,12 +102,12 @@ class CipherFuncs(object):
 
         elif 'caesar' in frame:
             try:
-                assert self.key > 26
+                assert int(self.key) < 26
             except AssertionError:
                 print "Please enter an integer key (NB: should be less than the string length for best results)"
                 return self.key_get()
             else:
-                return self.key
+                return int(self.key)
 
         elif 'substitution' in frame:
             self.key = self.key.lower()
@@ -129,20 +133,42 @@ class CipherFuncs(object):
 
     def rand_key(self):
         frame = str(inspect.stack())
+
         if 'affine' in frame:
             while True:
                 key_a = random.randint(2, self.char_set_len)
                 key_b = random.randint(2, self.char_set_len)
                 if crypto_funcs.gcd(key_a, self.char_set_len) == 1:
                     self.key = key_a * self.char_set_len + key_b
-                    print "Key is {}".format(self.key)
+                    print "Affine key is {}".format(self.key)
                     return self.key
 
         elif 'substitution' in frame:
-            key_temp = list(string.ascii_lowercase)
-            random.shuffle(key_temp)
-            print "Key is {}".format(''.join(key_temp))
-            return ''.join(key_temp)
+            self.key = list(string.ascii_lowercase)
+            random.shuffle(self.key)
+            print "Substitution key is {}".format(''.join(self.key))
+            return ''.join(self.key)
+
+        elif 'vigenere' in frame:  # use one-time pad length if asked for a random key
+            self.key = ""
+            for i in range(len(self.text)/2):
+                self.key += string.ascii_lowercase[random.randint(0, 25)]
+
+            print "Vigenere key is {}".format(self.key)
+            return self.key
+
+        elif 'transposition' in frame:
+            r1 = len(self.text) / 4
+            r2 = len(self.text) / 2
+            self.key = random.randint(r1, r2)
+
+            print "Transposition key is {}".format(self.key)
+            return self.key
+
+        elif 'caesar' in frame:
+            self.key = random.randint(0, 25)
+            print "Caesar key is {}".format(self.key)
+            return self.key
 
     def script_call(self):
         x = self.get_message()
@@ -172,12 +198,15 @@ class CipherFuncs(object):
         if not self.text and not self.option and not self.key:  # if cipher is run as a script with no arguments
             self.text, self.option, self.key = self.script_call()
             return self.text, self.option, self.key
+
         elif self.option and not self.text and not self.key:  # cipher called from main.py, so enc/dec is specified
             self.text, self.key = self.main_call()
             return self.text, self.option, self.key
+
         elif self.text and not self.option and not self.key:  # cipher called directly from CLI with an included string
             self.option, self.key = self.cli_call()
             return self.text, self.option, self.key
+
         else:                                                 # cipher run in the shell with all arguments provided
             valid_choices = self.shell_call()
             if valid_choices:
@@ -203,6 +232,7 @@ def cmd_handles(*args):
 
 
 def clipboard(cipher_text):
+    print cipher_text
     if platform.system() == "Windows":
         store_clip = raw_input("\nStore output in clipboard? (y/n): ")
         if store_clip.startswith('y'):
