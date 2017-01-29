@@ -1,7 +1,7 @@
 # Ciphers
 Presented here are a variety of cryptographic ciphers, each with encryption and decryption ability.
 
-Each cipher accepts a string and encrypts/decrypts that string using a user-provided key. With some ciphers, the user may choose to use a randomly generated encryption key (e.g. affine).
+Each cipher accepts a string and encrypts/decrypts that string using a key. The user may choose to use a randomly generated encryption key by inputting 'random' as the key.
 
 Implemented ciphers include:
 * Caesar cipher
@@ -12,9 +12,9 @@ Implemented ciphers include:
 
 # How to use
 Each cipher may be executed without arguments. The user will then be prompted for a message, whether they want the message encrypted or decrypted, and a key.
-Alternatively, each cipher may be called by name and optionally accepts 3 arguments (in the following order): `message`, `decrypt/encrypt`, `key` (or key size). Depending on the cipher being used, the key format may be different.
+Alternatively, each cipher may be called by name and optionally accepts 3 arguments (in the following order): `message`, `decrypt/encrypt`, `key` (or key size). Depending on the cipher being used, the key format may differ.
 
-If a cipher option and key are not provided, the user will be prompted for them. Otherwise, the cipher will immediately begin operating.
+If cipher operation and/or key are not provided, the user will be prompted for them. Otherwise, the cipher will immediately begin operating.
 
 Examples:
 
@@ -40,9 +40,8 @@ Enter an encryption/decryption key: 6
 cg orrilyaspp thcoyo
 ```
 
-Alternatively, run main.py from a CLI, which allows for sequential encryption and code breaking capability.
+Alternatively, run main.py from a command line for a user-friendly interface, which also allows access to additional options for sequential encryption and code breaking.
 
 # To-do
-* Allow the user to encrypt a string using more than one cipher, applied any number of times (e.g. use the transposition cipher, followed by the affine cipher).
-* Built-in brute force decryption options
+* Implement built-in brute force decryption
 * Detect english words in brute force decryption efforts and present candidate strings to the user
