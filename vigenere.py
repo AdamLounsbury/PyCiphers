@@ -1,6 +1,9 @@
+#!/usr/bin/env python
+# ACL 2016 - alounsbu@alumni.uwo.ca
+
 import string
 import sys
-from cipher_funcs import CipherFuncs, cmd_handles
+from cipher_funcs import CipherFuncs, cmd_handles, clipboard
 
 char_set = string.ascii_lowercase
 
@@ -9,7 +12,9 @@ def vigenere(text="", option="", key=""):
     vigenere_cipher = CipherFuncs(text, option, key)
     text, option, key = vigenere_cipher.call_source()
 
-    return encrypt_decrypt(text, option, key)
+    cipher_text = encrypt_decrypt(text, option, key)
+    print cipher_text
+    clipboard(cipher_text)
 
 
 def encrypt_decrypt(message, option, key):
@@ -38,7 +43,7 @@ def encrypt_decrypt(message, option, key):
         else:
             cipher_text += char
 
-    print cipher_text
+    return cipher_text
 
 if __name__ == "__main__":
     try:
