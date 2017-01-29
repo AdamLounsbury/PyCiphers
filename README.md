@@ -3,11 +3,12 @@ Presented here are a variety of cryptographic ciphers, each with encryption and 
 
 Each cipher accepts a string and encrypts/decrypts that string using a user-provided key. With some ciphers, the user may choose to use a randomly generated encryption key (e.g. affine).
 
-Currently implemented ciphers include:
+Implemented ciphers include:
 * Caesar cipher
 * Transposition cipher
 * Affine cipher
 * Vigenère cipher
+* Substitution cipher
 
 # How to use
 Each cipher may be executed without arguments. The user will then be prompted for a message, whether they want the message encrypted or decrypted, and a key.
@@ -18,9 +19,9 @@ If a cipher option and key are not provided, the user will be prompted for them.
 Examples:
 
 ```python
-from vigenere import vigenere
-vigenere('This is a test message', 'e', 'blastoise')
-Usik bg i lite mwlgiyi
+from affine import affine
+vigenere('This is a test message', 'e', 1696)
+L0ig ig U yBgy ~BggU.B
 ```
 
 ```bash
@@ -42,8 +43,6 @@ cg orrilyaspp thcoyo
 Alternatively, run main.py from a CLI, which allows for sequential encryption and code breaking capability.
 
 # To-do
-* Implement the following ciphers:
-  * Substitution cipher
 * Allow the user to encrypt a string using more than one cipher, applied any number of times (e.g. use the transposition cipher, followed by the affine cipher).
 * Built-in brute force decryption options
 * Detect english words in brute force decryption efforts and present candidate strings to the user
