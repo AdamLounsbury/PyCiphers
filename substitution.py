@@ -3,7 +3,7 @@
 
 import string
 import sys
-from cipher_funcs import CipherFuncs, cmd_handles, clipboard
+from cipher_funcs import CipherFuncs, cmd_handles
 
 
 def substitution(text="", option="", key=""):
@@ -11,8 +11,7 @@ def substitution(text="", option="", key=""):
     text, option, key = substitution_cipher.call_source()
 
     cipher_text = encrypt_decrypt(text, option, key)
-    print cipher_text
-    clipboard(cipher_text)
+    return cipher_text
 
 
 def encrypt_decrypt(text, option, key):
