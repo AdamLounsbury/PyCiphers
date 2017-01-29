@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # ACL 2016 - alounsbu@alumni.uwo.ca
 
-import string
 import sys
 from cipher_funcs import CipherFuncs, cmd_handles, clipboard
 from crypto_funcs import mod_inverse
 
-
-char_set = string.printable
+char_set = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&()*+,-./:;<=>?@[]^_`{|}~'
 char_set_len = len(char_set)
 
 
