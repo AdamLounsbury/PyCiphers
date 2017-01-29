@@ -10,9 +10,8 @@ def transposition(text="", option="", key=""):
     transposition_cipher = CipherFuncs(text, option, key)
     text, option, key = transposition_cipher.call_source()
 
-    cipher_text = encrypt_decrypt(text, option, int(key))  # cast str key to int
-    print cipher_text
-    clipboard(cipher_text)
+    cipher_text = encrypt_decrypt(text, option, key)  # cast str key to int
+    return cipher_text
 
 
 def encrypt_decrypt(message, option, key):
