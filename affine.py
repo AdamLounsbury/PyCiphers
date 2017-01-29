@@ -16,8 +16,7 @@ def affine(text="", option="", key=""):
     key_a, key_b = affine_cipher.affine_compute_keys()
 
     cipher_text = encrypt_decrypt(text, option, key_a, key_b)
-    print cipher_text
-    clipboard(cipher_text)
+    return cipher_text
 
 
 def encrypt_decrypt(message, option, key_a, key_b):
