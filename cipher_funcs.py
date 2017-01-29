@@ -16,7 +16,8 @@ class CipherFuncs(object):
         self.text = text
         self.option = option
         self.key = key
-        self.char_set_len = len(string.printable)
+        self.char_set = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&()*+,-./:;<=>?@[]^_`{|}~'
+        self.char_set_len = len(self.char_set)
 
     def get_message(self):
         self.text = raw_input("Enter a string to be encrypted/decrypted: ")
@@ -66,18 +67,20 @@ class CipherFuncs(object):
                 return self.key_get()
             else:
                 return int(self.key)
+
         elif 'affine' in frame:
             try:
                 key_a, key_b = self.affine_compute_keys()
                 if key_a == 1:
                     print "The affine cipher is very weak when key A computes to 1. Choose a different key.\n"
-                    self.key_get()
+                    return self.key_get()
                 elif key_b == 0:
                     print "The affine cipher is very weak when key B computes to 0. Choose a different key.\n"
-                    self.key_get()
+                    return self.key_get()
                 elif key_a < 0 or self.char_set_len - 1 < key_b < 0:
                     print "Key A must be greater than 0 and Key B must be between 0 and {}. Choose a different key.\n"\
                         .format(self.char_set_len - 1)
+                    return self.key_get()
                 elif crypto_funcs.gcd(key_a, self.char_set_len) != 1:
                     print "Key A ({}) and the symbol set size ({}) are not relatively prime.\n". \
                         format(key_a, self.char_set_len)
@@ -92,6 +95,7 @@ class CipherFuncs(object):
                 return self.key_get()
             else:
                 return self.key  # key A and B satisfy strength and validity tests
+
         elif 'caesar' in frame:
             try:
                 assert self.key > 26
@@ -100,13 +104,27 @@ class CipherFuncs(object):
                 return self.key_get()
             else:
                 return self.key
+
         elif 'substitution' in frame:
-            pass
-            # 3 cases: affine, int, and str
+            self.key = self.key.lower()
+            try:
+                assert len(self.key) == 26
+                assert sorted(self.key) == list(string.ascii_lowercase)  # test to see if contents are the same
+                assert self.key != list(string.ascii_lowercase)          # test to see if order is the same
+            except AssertionError:
+                print "Key requires all 26 letters of the alphabet in a random order"
+                if self.option == 'e':
+                    rand_key = raw_input("Would you like a random key to be generated? (y/n): ")
+                    if rand_key.startswith('y'):
+                        return self.rand_key()
+                    else:
+                        return self.key_get()
+            else:
+                return self.key
 
     def affine_compute_keys(self):
-        key_a = int(self.key) // len(string.printable)
-        key_b = int(self.key) % len(string.printable)
+        key_a = int(self.key) // self.char_set_len
+        key_b = int(self.key) % self.char_set_len
         return key_a, key_b
 
     def rand_key(self):
@@ -116,8 +134,15 @@ class CipherFuncs(object):
                 key_a = random.randint(2, self.char_set_len)
                 key_b = random.randint(2, self.char_set_len)
                 if crypto_funcs.gcd(key_a, self.char_set_len) == 1:
-                    print "Key is {0}".format(key_a * self.char_set_len + key_b)
-                    return key_a * self.char_set_len + key_b
+                    self.key = key_a * self.char_set_len + key_b
+                    print "Key is {}".format(self.key)
+                    return self.key
+
+        elif 'substitution' in frame:
+            key_temp = list(string.ascii_lowercase)
+            random.shuffle(key_temp)
+            print "Key is {}".format(''.join(key_temp))
+            return ''.join(key_temp)
 
     def script_call(self):
         x = self.get_message()
