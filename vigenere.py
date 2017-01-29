@@ -13,8 +13,7 @@ def vigenere(text="", option="", key=""):
     text, option, key = vigenere_cipher.call_source()
 
     cipher_text = encrypt_decrypt(text, option, key)
-    print cipher_text
-    clipboard(cipher_text)
+    return cipher_text
 
 
 def encrypt_decrypt(message, option, key):
