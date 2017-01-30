@@ -20,7 +20,7 @@ Examples:
 
 ```python
 from affine import affine
-vigenere('This is a test message', 'e', 1696)
+affine('This is a test message', 'e', 1696)
 L0ig ig U yBgy ~BggU.B
 ```
 
