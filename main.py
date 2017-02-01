@@ -7,6 +7,7 @@ import transposition
 import affine
 import caesar
 import substitution
+from code_break import CodeBreak
 from cipher_funcs import clipboard
 
 func_dict = {1: caesar.caesar, 2: transposition.transposition, 3: affine.affine, 4: vigenere.vigenere,
@@ -16,7 +17,7 @@ func_dict = {1: caesar.caesar, 2: transposition.transposition, 3: affine.affine,
 def main():
     print "\nWelcome! Please input a numbered option below (or type 'help' for examples)\n"
     print "1) Single encryption"
-    print "2) Sequential encryption (with random key generation)"
+    print "2) Multiple encryption (with random key generation)"
     print "3) Single decryption"
     print "4) Brute-force code breaking"
     print "5) Quit\n"
@@ -26,7 +27,7 @@ def main():
     if main_choice == '1':
         return single_encryption_decryption('e')
     elif main_choice == '2':
-        return sequential_encryption()
+        return multiple_encryption()
     elif main_choice == '3':
         return single_encryption_decryption('d')
     elif main_choice == '4':
@@ -67,6 +68,9 @@ def cipher_run(choice, option):
     elif choice.startswith('q'):
         sys.exit()
 
+    elif choice.startswith('h') or choice.startswith('e'):  # for 'help' or 'examples'
+        examples()
+
     else:
         print "Invalid choice"
         return cipher_run(choice, option)
@@ -79,25 +83,21 @@ def single_encryption_decryption(option):
     return cipher_run(choice, option)
 
 
-def sequential_encryption():
+def multiple_encryption():
     print "\nPlease enter a string to be encrypted\n"
 
     cipher_text = raw_input("> ")
 
     print "\nPlease enter a sequence of numbers (1-5) that represent the ciphers you wish to execute on a string"
     print "An example input might be 423, which would execute the vigenere, transposition, and affine ciphers " \
-          "sequentially, using randomly-generated keys for each\n"
+          "sequentially, using randomly-generated keys for each (each key will be displayed)\n"
 
     single_ciphers()
     sequence = sequence_prompt()
 
-    cipher_sequence = []
-
-    for cipher in sequence:
-        cipher_sequence.append(func_dict[int(cipher)])
-
-    for func in cipher_sequence:
-        cipher_text = func(cipher_text, 'e', 'random')
+    for func in sequence:
+        cipher_text = func_dict.items()[int(func)-1][1](cipher_text, 'e', 'random')
+        # [int(func) - 1] due to func_dict using non-zero labeling for ease of human use
 
     print '\nfinal cipher text is:', cipher_text
 
@@ -115,7 +115,12 @@ def sequence_prompt():
 
 
 def code_break():
-    pass
+    print "\nPlease enter a string for attempted brute-force decryption\n"
+
+    cipher_text = raw_input("> ")
+
+    decrypt = CodeBreak(cipher_text)
+    decrypt.main()
 
 
 def examples():
