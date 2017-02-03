@@ -1,20 +1,22 @@
 #!/usr/bin/env python
 # ACL 2016 - alounsbu@alumni.uwo.ca
 
-import crypto_funcs
 import inspect
 import platform
 import random
-import sys
 import string
+import sys
 import win32clipboard
+
+import crypto_funcs
 
 CAESAR_MAX_KEY_SIZE = 25
 
 
 class CipherFuncs(object):
+    """Base class for cipher-related functions, including shell/terminal handling and clipboard functionality."""
 
-    def __init__(self, text="", option="", key=""):
+    def __init__(self, text='', option='', key=''):
         self.text = text
         self.option = option
         self.key = key
@@ -22,17 +24,23 @@ class CipherFuncs(object):
         self.char_set_len = len(self.char_set)
 
     def get_message(self):
-        self.text = raw_input("Enter a string to be encrypted/decrypted: ")
+        """Get text that is to be processed via encryption/decryption."""
+
+        self.text = raw_input('Enter a string to be encrypted/decrypted: ')
         return self.text
 
     def encrypt_decrypt_prompt(self):
-        self.option = raw_input("Encrypt/Decrypt (e/d)?: ")
+        """Encryption/decryption prompt that also determines if the consequent input is valid."""
+
+        self.option = raw_input('Encrypt/Decrypt (e/d)?: ')
         if self.check_option():
             return self.option
         else:
             return self.encrypt_decrypt_prompt()
 
     def check_option(self):
+        """Determine if the option the user input for encryption/decryption is valid."""
+
         if self.option.startswith('E') or self.option.startswith('e'):
             self.option = self.option.lower()
             return self.option
@@ -44,13 +52,17 @@ class CipherFuncs(object):
             return False
 
     def key_get(self):
-        self.key = raw_input("Enter an encryption/decryption key: ")
+        """Prompt the user to input an encryption/decryption key and check that key (based on the cipher used)."""
+
+        self.key = raw_input('Enter an encryption/decryption key: ')
         self.key = self.check_key()
         return self.key
 
     def check_key(self):
-        """Three cases to check for: affine (key specificity), int, and str; each time, will look in the call stack
-            for the function name and handle key input errors with respect to each cipher's key requirements"""
+        """Check the key in three cases: affine (for key specificity), int, and str; each time, the call stack is
+        inspected for the function name. Key input errors are handled with respect to each cipher's key requirements
+        """
+
         frame = str(inspect.stack())
 
         if self.key == 'random':
@@ -58,9 +70,9 @@ class CipherFuncs(object):
 
         elif 'vigenere' in frame:
             try:
-                self.key = self.key.replace(" ", "")  # in case the user enters a string key containing spaces
+                self.key = self.key.replace(' ', "")
             except AttributeError:
-                print "Please enter a string key."
+                print 'Please enter a string key.'
                 return self.key_get()
             else:
                 return self.key
@@ -70,7 +82,7 @@ class CipherFuncs(object):
                 assert int(self.key)
                 assert self.key != 0
             except AssertionError:
-                print "Please enter an integer key (NB: should be less than the string length for best results)"
+                print 'Please enter an integer key (NB: should be less than the string length for best results)'
                 return self.key_get()
             else:
                 return int(self.key)
@@ -80,35 +92,36 @@ class CipherFuncs(object):
             try:
                 key_a, key_b = affine.compute_keys(self.key)
                 if key_a == 1:
-                    print "The affine cipher is very weak when key A computes to 1. Choose a different key.\n"
+                    print 'The affine cipher is very weak when key A computes to 1. Choose a different key.\n'
                     return self.key_get()
                 elif key_b == 0:
-                    print "The affine cipher is very weak when key B computes to 0. Choose a different key.\n"
+                    print 'The affine cipher is very weak when key B computes to 0. Choose a different key.\n'
                     return self.key_get()
                 elif key_a < 0 or self.char_set_len - 1 < key_b < 0:
-                    print "Key A must be greater than 0 and Key B must be between 0 and {}. Choose a different " \
-                          "key.\n".format(self.char_set_len - 1)
+                    print 'Key A must be greater than 0 and Key B must be between 0 and {}. Choose a different ' \
+                          'key.\n'.format(self.char_set_len - 1)
                     return self.key_get()
                 elif crypto_funcs.gcd(key_a, self.char_set_len) != 1:
-                    print "Key A ({}) and the symbol set size ({}) are not relatively prime.\n". \
+                    print 'Key A ({}) and the symbol set size ({}) are not relatively prime.\n'. \
                         format(key_a, self.char_set_len)
                     if self.option == 'e':
-                        rand_key = raw_input("Would you like a random key to be generated? (y/n): ")
+                        rand_key = raw_input('Would you like a random key to be generated? (y/n): ')
                         if rand_key.startswith('y'):
                             return self.rand_key()
                         else:
                             return self.key_get()
             except ValueError:
-                print "Please enter an integer key > 0"
+                print 'Please enter an integer key > 0'
                 return self.key_get()
             else:
-                return self.key  # key A and B satisfy strength and validity tests
+                # Key A and B satisfy strength and validity tests.
+                return self.key
 
         elif 'caesar' in frame:
             try:
                 assert int(self.key) < 26
             except AssertionError:
-                print "Please enter an integer key (NB: should be less than the string length for best results)"
+                print 'Please enter an integer key (NB: should be less than the string length for best results)'
                 return self.key_get()
             else:
                 return int(self.key)
@@ -117,12 +130,14 @@ class CipherFuncs(object):
             self.key = self.key.lower()
             try:
                 assert len(self.key) == 26
-                assert sorted(self.key) == list(string.ascii_lowercase)  # test to see if contents are the same
-                assert self.key != list(string.ascii_lowercase)          # test to see if order is the same
+
+                # Determine if the key's contents are the same as the char set, followed by if the order is the same.
+                assert sorted(self.key) == list(string.ascii_lowercase)
+                assert self.key != list(string.ascii_lowercase)
             except AssertionError:
-                print "Key requires all 26 letters of the alphabet in a non-alphabetical order"
+                print 'Key requires all 26 letters of the alphabet in a non-alphabetical order'
                 if self.option == 'e':
-                    rand_key = raw_input("Would you like a random key to be generated? (y/n): ")
+                    rand_key = raw_input('Would you like a random key to be generated? (y/n): ')
                     if rand_key.startswith('y'):
                         return self.rand_key()
                     else:
@@ -131,6 +146,8 @@ class CipherFuncs(object):
                 return self.key
 
     def rand_key(self):
+        """Generate a random key depending on which cipher is in the call stack."""
+
         frame = str(inspect.stack())
 
         if 'affine' in frame:
@@ -139,21 +156,21 @@ class CipherFuncs(object):
                 key_b = random.randint(2, self.char_set_len)
                 if crypto_funcs.gcd(key_a, self.char_set_len) == 1:
                     self.key = key_a * self.char_set_len + key_b
-                    print "Affine key is {}".format(self.key)
+                    print 'Affine key is {}'.format(self.key)
                     return self.key
 
         elif 'substitution' in frame:
             self.key = list(string.ascii_lowercase)
             random.shuffle(self.key)
-            print "Substitution key is {}".format(''.join(self.key))
+            print 'Substitution key is {}'.format(''.join(self.key))
             return ''.join(self.key)
 
-        elif 'vigenere' in frame:  # use one-time pad length if asked for a random key
+        elif 'vigenere' in frame:
             self.key = ""
             for i in range(len(self.text)/2):
                 self.key += string.ascii_lowercase[random.randint(0, 25)]
 
-            print "Vigenere key is {}".format(self.key)
+            print 'Vigenere key is {}'.format(self.key)
             return self.key
 
         elif 'transposition' in frame:
@@ -162,31 +179,45 @@ class CipherFuncs(object):
             r2 = len(self.text) / 2
             self.key = random.randint(r1, r2)
 
-            print "Transposition key is {}".format(self.key)
+            print 'Transposition key is {}'.format(self.key)
             return self.key
 
         elif 'caesar' in frame:
             self.key = random.randint(0, CAESAR_MAX_KEY_SIZE)
-            print "Caesar key is {}".format(self.key)
+            print 'Caesar key is {}'.format(self.key)
             return self.key
 
     def script_call(self):
+        """If a cipher is executed as a script with no arguments, prompt the user for everything."""
+
         x = self.get_message()
         y = self.encrypt_decrypt_prompt()
         z = self.key_get()
         return x, y, z
 
     def main_call(self):
+        """If a cipher is executed from main.py, encryption/decryption is specified and only the string and key are
+        required from the user.
+        """
+
         x = self.get_message()
         y = self.key_get()
         return x, y
 
     def cli_call(self):
+        """If a cipher is executed from a terminal with an included string, encryption/decryption option and a key
+        are required from the user.
+        """
+
         x = self.encrypt_decrypt_prompt()
         y = self.key_get()
         return x, y
 
     def shell_call(self):
+        """If a cipher is executed within the Python shell with all arguments provided, the option and key need only
+        be checked for validity.
+        """
+
         x = self.check_option()
         y = self.check_key()
         if x and y:  # both option and key must have received valid inputs
@@ -195,28 +226,38 @@ class CipherFuncs(object):
             return False
 
     def call_source(self):
-        if not self.text and not self.option and not self.key:  # if cipher is run as a script with no arguments
+        """Determine how a cipher is being executed and modify the required user inputs appropriately."""
+
+        # If a cipher is run as a script with no arguments...
+        if not self.text and not self.option and not self.key:
             self.text, self.option, self.key = self.script_call()
             return self.text, self.option, self.key
 
-        elif self.option and not self.text and not self.key:  # cipher called from main.py, so enc/dec is specified
+        # If a cipher is called from main.py, so enc/dec is specified...
+        elif self.option and not self.text and not self.key:
             self.text, self.key = self.main_call()
             return self.text, self.option, self.key
 
-        elif self.text and not self.option and not self.key:  # cipher called directly from CLI with an included string
+        # If a cipher is called directly from a terminal with an included string...
+        elif self.text and not self.option and not self.key:
             self.option, self.key = self.cli_call()
             return self.text, self.option, self.key
 
-        else:                                                 # cipher run in the shell with all arguments provided
+        # Otherwise, the cipher has been called in the shell with all arguments provided.
+        else:
             valid_choices = self.shell_call()
             if valid_choices:
                 return self.text, self.option, self.key
             else:
-                print "Try again!\n"
+                print 'Try again!\n'
                 sys.exit()
 
 
 def cmd_handles(*args):
+    """Get the string from the user in the appropriate way if a cipher has been executed
+     from either the Python shell or a terminal.
+     """
+
     text = ""
 
     if len(args[0]) > 1:
@@ -225,19 +266,23 @@ def cmd_handles(*args):
             if k == (word_num - 1):
                 text += args[0][k]
             else:
-                text += args[0][k] + " "
+                text += args[0][k] + ' '
         return text
     else:
         return False
 
 
 def clipboard(cipher_text):
+    """Give the user the option of automatically copying an encrypted/decrypted string to the Windows clipboard
+    if Windows is the OS running on the user's computer.
+    """
+
     frame = str(inspect.stack())
 
-    if platform.system() == "Windows":
+    if platform.system() == 'Windows':
         if 'multiple_encryption' not in frame:
             print cipher_text
-            store_clip = raw_input("\nStore output in clipboard? (y/n): ")
+            store_clip = raw_input('\nStore output in clipboard? (y/n): ')
             if store_clip.startswith('y'):
                 win32clipboard.OpenClipboard()
                 win32clipboard.EmptyClipboard()
@@ -245,6 +290,3 @@ def clipboard(cipher_text):
                 win32clipboard.CloseClipboard()
         else:
             return cipher_text
-
-if __name__ == "__main__":
-    pass

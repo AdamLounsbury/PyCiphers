@@ -3,10 +3,15 @@
 
 import string
 import sys
+
 from cipher_funcs import CipherFuncs, cmd_handles, clipboard
 
 
-def substitution(text="", option="", key=""):
+def substitution(text='', option='', key=''):
+    """Instantiate a CipherFuncs class for the Substitution cipher, obtaining all required parameters from the user
+    based off of what arguments were initially provided and how this method was called.
+    """
+
     substitution_cipher = CipherFuncs(text, option, key)
     text, option, key = substitution_cipher.call_source()
 
@@ -15,11 +20,14 @@ def substitution(text="", option="", key=""):
 
 
 def encrypt_decrypt(text, option, key):
-    cipher_text = ""
+    """Apply the Substitution cipher to a string based on the option provided (i.e. encryption or decryption)."""
+
+    cipher_text = ''
 
     char_set = string.ascii_lowercase
     key_1 = key
 
+    # For decryption, simply swap the two sets of characters and run the character iteration loop normally.
     if option.startswith('d'):
         char_set, key_1 = key_1, char_set
 
@@ -36,10 +44,10 @@ def encrypt_decrypt(text, option, key):
     return cipher_text
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     try:
         msg = cmd_handles(sys.argv)
     except NameError:
-        raise NameError("This module should be in the same folder as cipher_funcs.py")
+        raise NameError('This module should be in the same folder as cipher_funcs.py')
 
     substitution(msg)

@@ -3,12 +3,17 @@
 
 import string
 import sys
+
 from cipher_funcs import CipherFuncs, cmd_handles, clipboard
 
 char_set = string.ascii_lowercase
 
 
-def vigenere(text="", option="", key=""):
+def vigenere(text='', option='', key=''):
+    """Instantiate a CipherFuncs class for the Vigenere cipher, obtaining all required parameters from the user
+    based off of what arguments were initially provided and how this method was called.
+    """
+
     vigenere_cipher = CipherFuncs(text, option, key)
     text, option, key = vigenere_cipher.call_source()
 
@@ -17,7 +22,9 @@ def vigenere(text="", option="", key=""):
 
 
 def encrypt_decrypt(message, option, key):
-    cipher_text = ""
+    """Apply the Vigenere cipher to a string based on the option provided (i.e. encryption or decryption)."""
+
+    cipher_text = ''
     key_index = 0
 
     for char in message:
@@ -44,10 +51,10 @@ def encrypt_decrypt(message, option, key):
 
     return cipher_text
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     try:
         msg = cmd_handles(sys.argv)
     except NameError:
-        raise NameError("This module should be in the same folder as cipher_funcs.py")
+        raise NameError('This module should be in the same folder as cipher_funcs.py')
 
     vigenere(msg)

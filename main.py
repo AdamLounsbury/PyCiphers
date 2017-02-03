@@ -2,11 +2,13 @@
 # ACL 2016 - alounsbu@alumni.uwo.ca
 
 import sys
+
 import vigenere
 import transposition
 import affine
 import caesar
 import substitution
+
 from code_break import CodeBreak
 from cipher_funcs import clipboard
 
@@ -15,14 +17,16 @@ cipher_dict = {1: caesar.caesar, 2: transposition.transposition, 3: affine.affin
 
 
 def main():
-    print "\nWelcome! Please input a numbered option below\n"
-    print "1) Single encryption"
-    print "2) Multiple encryption (with random key generation)"
-    print "3) Single decryption"
-    print "4) Brute-force code breaking"
-    print "5) Quit\n"
+    """Menu display of available operations"""
 
-    main_choice = raw_input("> ")
+    print '\nWelcome! Please input a numbered option below\n'
+    print '1) Single encryption'
+    print '2) Multiple encryption (with random key generation)'
+    print '3) Single decryption'
+    print '4) Brute-force code breaking'
+    print '5) Quit\n'
+
+    main_choice = raw_input('> ')
 
     if main_choice == '1':
         return single_encryption_decryption('e')
@@ -36,64 +40,73 @@ def main():
     elif main_choice == '5' or main_choice.startswith('q'):
         sys.exit()
     else:
-        print "Invalid choice"
+        print 'Invalid choice'
         return main()
 
 
 def single_ciphers():
-    print "1) Caesar"
-    print "2) Transposition"
-    print "3) Affine"
-    print "4) Vigenere"
-    print "5) Substitution\n"
+    """Menu display of currently implemented ciphers."""
+
+    print '1) Caesar'
+    print '2) Transposition'
+    print '3) Affine'
+    print '4) Vigenere'
+    print '5) Substitution\n'
 
 
 def cipher_run(choice, option):
+    """Pass user's cipher choice to the appropriate cipher and execute that cipher."""
 
     if choice.isdigit() and 0 < int(choice) <= 5:
         cipher_dict[int(choice)](option=option)
     elif choice.startswith('q'):
         sys.exit()
     else:
-        print "Invalid choice, please choose a valid option\n"
-        choice = raw_input("> ")
+        print 'Invalid choice, please choose a valid option\n'
+        choice = raw_input('> ')
         return cipher_run(choice, option)
 
 
 def single_encryption_decryption(option):
-    print "\nPlease choose a cipher\n"
+    """Prompt user for a cipher and pass that choice off for validation."""
+
+    print '\nPlease choose a cipher\n'
     single_ciphers()
-    choice = raw_input("> ")
+    choice = raw_input('> ')
     return cipher_run(choice, option)
 
 
 def multiple_encryption():
-    print "\nPlease enter a string to be encrypted\n"
+    """Prompt user for a sequence of ciphers, which are called sequentially on a string."""
 
-    cipher_text = raw_input("> ")
+    print '\nPlease enter a string to be encrypted\n'
 
-    print "\nPlease enter a sequence of numbers (1-5) that represent the ciphers you wish to execute on a string"
-    print "An example input might be 423, which would execute the vigenere, transposition, and affine ciphers " \
-          "sequentially, using randomly-generated keys for each (each key will be displayed)\n"
+    cipher_text = raw_input('> ')
+
+    print '\nPlease enter a sequence of numbers (1-5) that represent the ciphers you wish to execute on a string'
+    print 'An example input might be 423, which would execute the vigenere, transposition, and affine ciphers ' \
+          'sequentially, using randomly-generated keys for each (each key will be displayed)\n'
 
     single_ciphers()
     sequence = sequence_prompt()
 
     for func in sequence:
+        # [int(func) - 1] is used due to cipher_dict using non-zero labeling for ease of human use.
         cipher_text = cipher_dict.items()[int(func)-1][1](cipher_text, 'e', 'random')
-        # [int(func) - 1] due to cipher_dict using non-zero labeling for ease of human use
 
     return cipher_text
 
 
 def sequence_prompt():
-    sequence = raw_input("> ")
+    """Prompt the user for a sequence of ciphers in integer format and then validate that sequence."""
+
+    sequence = raw_input('> ')
     print '\n'
 
     try:
         for i in sequence:
             if int(i) <= 0 or int(i) > 5:
-                print "Invalid sequence"
+                print 'Invalid sequence'
                 return sequence_prompt()
             else:
                 return sequence
@@ -103,18 +116,20 @@ def sequence_prompt():
 
 
 def code_break():
-    print "\nPlease enter a string for attempted brute-force decryption\n"
+    """Prompt the user for a string for brute-force decryption."""
 
-    cipher_text = raw_input("> ")
+    print '\nPlease enter a string for attempted brute-force decryption\n'
+
+    cipher_text = raw_input('> ')
 
     try:
         assert len(cipher_text) > 0
     except AssertionError:
-        print "Please enter a valid string"
+        print 'Please enter a valid string'
         return code_break()
 
     decrypt = CodeBreak(cipher_text)
     decrypt.code_break()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
