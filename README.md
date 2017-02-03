@@ -1,7 +1,7 @@
 # Ciphers
 Presented here are a variety of cryptographic ciphers, each with encryption and decryption ability.
 
-Each cipher accepts a string and encrypts/decrypts that string using a key. The user may choose to use a randomly generated encryption key by providing 'random' as the key.
+Each cipher accepts a string and encrypts/decrypts that string using a key. The user may choose to use a randomly generated encryption key by inputting 'random' as the key.
 
 Implemented ciphers include:
 * Caesar cipher
