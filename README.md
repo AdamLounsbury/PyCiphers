@@ -1,7 +1,7 @@
 # Ciphers
 Presented here are a variety of cryptographic ciphers, each with encryption and decryption ability.
 
-Each cipher accepts a string and encrypts/decrypts that string using a key. The user may choose to use a randomly generated encryption key by inputting 'random' as the key.
+Each cipher accepts a string and encrypts/decrypts that string using a key. The user may choose to use a randomly generated encryption key by providing 'random' as the key.
 
 Implemented ciphers include:
 * Caesar cipher
@@ -11,10 +11,8 @@ Implemented ciphers include:
 * Substitution cipher
 
 # How to use
-Each cipher may be executed without arguments. The user will then be prompted for a message, whether they want the message encrypted or decrypted, and a key.
-Alternatively, each cipher may be called by name and optionally accepts 3 arguments (in the following order): `message`, `decrypt/encrypt`, `key` (or key size). Depending on the cipher being used, the key format may differ.
 
-If cipher operation and/or key are not provided, the user will be prompted for them. Otherwise, the cipher will immediately begin operating.
+Run `./main.py` from a terminal for a user-friendly interface. Each cipher may also be executed independently in the python shell or from a terminal.
 
 Examples:
 
@@ -40,8 +38,6 @@ Enter an encryption/decryption key: 6
 cg orrilyaspp thcoyo
 ```
 
-Alternatively, run main.py from a command line for a user-friendly interface, which also allows access to additional options for sequential encryption and code breaking.
 
 # To-do
-* Implement built-in brute force decryption
-* Detect english words in brute force decryption efforts and present candidate strings to the user
+* Implement set-up
