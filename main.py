@@ -10,12 +10,12 @@ import substitution
 from code_break import CodeBreak
 from cipher_funcs import clipboard
 
-func_dict = {1: caesar.caesar, 2: transposition.transposition, 3: affine.affine, 4: vigenere.vigenere,
-             5: substitution.substitution}
+cipher_dict = {1: caesar.caesar, 2: transposition.transposition, 3: affine.affine, 4: vigenere.vigenere,
+               5: substitution.substitution}
 
 
 def main():
-    print "\nWelcome! Please input a numbered option below (or type 'help' for examples)\n"
+    print "\nWelcome! Please input a numbered option below\n"
     print "1) Single encryption"
     print "2) Multiple encryption (with random key generation)"
     print "3) Single decryption"
@@ -27,15 +27,14 @@ def main():
     if main_choice == '1':
         return single_encryption_decryption('e')
     elif main_choice == '2':
-        return multiple_encryption()
+        cipher_text = multiple_encryption()
+        return clipboard(cipher_text)
     elif main_choice == '3':
         return single_encryption_decryption('d')
     elif main_choice == '4':
         return code_break()
     elif main_choice == '5' or main_choice.startswith('q'):
         sys.exit()
-    elif main_choice.startswith('h') or main_choice.startswith('H'):
-        return examples()
     else:
         print "Invalid choice"
         return main()
@@ -50,36 +49,21 @@ def single_ciphers():
 
 
 def cipher_run(choice, option):
-    if choice == 1:
-        clipboard(caesar.caesar(option=option))
 
-    elif choice == 2:
-        clipboard(transposition.transposition(option=option))
-
-    elif choice == 3:
-        clipboard(affine.affine(option=option))
-
-    elif choice == 4:
-        clipboard(vigenere.vigenere(option=option))
-
-    elif choice == 5:
-        clipboard(substitution.substitution(option=option))
-
+    if choice.isdigit() and 0 < int(choice) <= 5:
+        cipher_dict[int(choice)](option=option)
     elif choice.startswith('q'):
         sys.exit()
-
-    elif choice.startswith('h') or choice.startswith('e'):  # for 'help' or 'examples'
-        examples()
-
     else:
-        print "Invalid choice"
+        print "Invalid choice, please choose a valid option\n"
+        choice = raw_input("> ")
         return cipher_run(choice, option)
 
 
 def single_encryption_decryption(option):
     print "\nPlease choose a cipher\n"
     single_ciphers()
-    choice = input("> ")
+    choice = raw_input("> ")
     return cipher_run(choice, option)
 
 
@@ -96,22 +80,26 @@ def multiple_encryption():
     sequence = sequence_prompt()
 
     for func in sequence:
-        cipher_text = func_dict.items()[int(func)-1][1](cipher_text, 'e', 'random')
-        # [int(func) - 1] due to func_dict using non-zero labeling for ease of human use
+        cipher_text = cipher_dict.items()[int(func)-1][1](cipher_text, 'e', 'random')
+        # [int(func) - 1] due to cipher_dict using non-zero labeling for ease of human use
 
-    print '\nfinal cipher text is:', cipher_text
+    return cipher_text
 
 
 def sequence_prompt():
     sequence = raw_input("> ")
     print '\n'
 
-    for i in sequence:
-        if int(i) <= 0 or int(i) > 5:
-            print "Invalid sequence"
-            return sequence_prompt()
-        else:
-            return sequence
+    try:
+        for i in sequence:
+            if int(i) <= 0 or int(i) > 5:
+                print "Invalid sequence"
+                return sequence_prompt()
+            else:
+                return sequence
+    except ValueError:
+        print 'Please enter a numerical sequence\n'
+        return sequence_prompt()
 
 
 def code_break():
@@ -119,13 +107,14 @@ def code_break():
 
     cipher_text = raw_input("> ")
 
+    try:
+        assert len(cipher_text) > 0
+    except AssertionError:
+        print "Please enter a valid string"
+        return code_break()
+
     decrypt = CodeBreak(cipher_text)
-    decrypt.main()
-
-
-def examples():
-    pass
-
+    decrypt.code_break()
 
 if __name__ == "__main__":
     main()
