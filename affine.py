@@ -13,10 +13,10 @@ def affine(text="", option="", key=""):
     affine_cipher = CipherFuncs(text, option, key)
     text, option, key = affine_cipher.call_source()
 
-    key_a, key_b = affine_cipher.affine_compute_keys()
+    key_a, key_b = compute_keys(key)
 
     cipher_text = encrypt_decrypt(text, option, key_a, key_b)
-    return cipher_text
+    return clipboard(cipher_text)
 
 
 def encrypt_decrypt(message, option, key_a, key_b):
@@ -50,6 +50,12 @@ def decrypt(key_a, key_b, message):
             decrypt_text += char
 
     return decrypt_text
+
+
+def compute_keys(key):
+    key_a = int(key) // char_set_len
+    key_b = int(key) % char_set_len
+    return key_a, key_b
 
 if __name__ == "__main__":
     try:
