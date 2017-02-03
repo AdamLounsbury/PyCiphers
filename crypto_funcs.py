@@ -5,12 +5,16 @@
 
 
 def gcd(a, b):
+    """Calculate the greatest common divisor for two numbers."""
+
     while a != 0:
         a, b = b % a, a
     return b
 
 
 def mod_inverse(a, m):
+    """Determine the mod inverse of a number using the extended Euclidean algorithm."""
+
     if gcd(a, m) != 1:
         return None
 
