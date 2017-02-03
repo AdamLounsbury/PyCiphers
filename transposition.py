@@ -11,7 +11,7 @@ def transposition(text="", option="", key=""):
     text, option, key = transposition_cipher.call_source()
 
     cipher_text = encrypt_decrypt(text, option, key)  # cast str key to int
-    return cipher_text
+    return clipboard(cipher_text)
 
 
 def encrypt_decrypt(message, option, key):
