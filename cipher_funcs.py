@@ -9,6 +9,8 @@ import sys
 import string
 import win32clipboard
 
+CAESAR_MAX_KEY_SIZE = 25
+
 
 class CipherFuncs(object):
 
@@ -65,16 +67,18 @@ class CipherFuncs(object):
 
         elif 'transposition' in frame:
             try:
-                int(self.key)
-            except ValueError:
+                assert int(self.key)
+                assert self.key != 0
+            except AssertionError:
                 print "Please enter an integer key (NB: should be less than the string length for best results)"
                 return self.key_get()
             else:
                 return int(self.key)
 
         elif 'affine' in frame:
+            import affine
             try:
-                key_a, key_b = self.affine_compute_keys()
+                key_a, key_b = affine.compute_keys(self.key)
                 if key_a == 1:
                     print "The affine cipher is very weak when key A computes to 1. Choose a different key.\n"
                     return self.key_get()
@@ -116,7 +120,7 @@ class CipherFuncs(object):
                 assert sorted(self.key) == list(string.ascii_lowercase)  # test to see if contents are the same
                 assert self.key != list(string.ascii_lowercase)          # test to see if order is the same
             except AssertionError:
-                print "Key requires all 26 letters of the alphabet in a random order"
+                print "Key requires all 26 letters of the alphabet in a non-alphabetical order"
                 if self.option == 'e':
                     rand_key = raw_input("Would you like a random key to be generated? (y/n): ")
                     if rand_key.startswith('y'):
@@ -125,11 +129,6 @@ class CipherFuncs(object):
                         return self.key_get()
             else:
                 return self.key
-
-    def affine_compute_keys(self):
-        key_a = int(self.key) // self.char_set_len
-        key_b = int(self.key) % self.char_set_len
-        return key_a, key_b
 
     def rand_key(self):
         frame = str(inspect.stack())
@@ -158,6 +157,7 @@ class CipherFuncs(object):
             return self.key
 
         elif 'transposition' in frame:
+            # use 1/4 and 1/2 as divisors to create a reasonable spread of potential keys
             r1 = len(self.text) / 4
             r2 = len(self.text) / 2
             self.key = random.randint(r1, r2)
@@ -166,7 +166,7 @@ class CipherFuncs(object):
             return self.key
 
         elif 'caesar' in frame:
-            self.key = random.randint(0, 25)
+            self.key = random.randint(0, CAESAR_MAX_KEY_SIZE)
             print "Caesar key is {}".format(self.key)
             return self.key
 
@@ -232,17 +232,19 @@ def cmd_handles(*args):
 
 
 def clipboard(cipher_text):
-    print cipher_text
+    frame = str(inspect.stack())
+
     if platform.system() == "Windows":
-        store_clip = raw_input("\nStore output in clipboard? (y/n): ")
-        if store_clip.startswith('y'):
-            win32clipboard.OpenClipboard()
-            win32clipboard.EmptyClipboard()
-            win32clipboard.SetClipboardText(cipher_text)
-            win32clipboard.CloseClipboard()
-        return True
-    else:
-        sys.exit()
+        if 'multiple_encryption' not in frame:
+            print cipher_text
+            store_clip = raw_input("\nStore output in clipboard? (y/n): ")
+            if store_clip.startswith('y'):
+                win32clipboard.OpenClipboard()
+                win32clipboard.EmptyClipboard()
+                win32clipboard.SetClipboardText(cipher_text)
+                win32clipboard.CloseClipboard()
+        else:
+            return cipher_text
 
 if __name__ == "__main__":
     pass
