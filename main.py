@@ -106,10 +106,10 @@ def sequence_prompt():
     try:
         for i in sequence:
             if int(i) <= 0 or int(i) > 5:
-                print 'Invalid sequence'
+                print 'Invalid sequence\n'
                 return sequence_prompt()
-            else:
-                return sequence
+        else:
+            return sequence
     except ValueError:
         print 'Please enter a numerical sequence\n'
         return sequence_prompt()
