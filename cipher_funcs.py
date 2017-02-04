@@ -69,10 +69,18 @@ class CipherFuncs(object):
             return self.rand_key()
 
         elif 'vigenere' in frame:
+            # If the key is a string that has spaces, this try will work.
             try:
-                self.key = self.key.replace(' ', "")
+                self.key = self.key.replace(' ', '')
             except AttributeError:
-                print 'Please enter a string key.'
+                print 'Please enter a string key.\n'
+                return self.key_get()
+
+            # If the key has any numbers in it, the user will be stopped. Otherwise, the key is valid.
+            try:
+                assert self.key.isalpha()
+            except AssertionError:
+                print 'Please enter a string key.\n'
                 return self.key_get()
             else:
                 return self.key
@@ -82,7 +90,7 @@ class CipherFuncs(object):
                 assert int(self.key)
                 assert self.key != 0
             except AssertionError:
-                print 'Please enter an integer key (NB: should be less than the string length for best results)'
+                print 'Please enter an integer key (NB: should be less than the string length for best results)\n'
                 return self.key_get()
             else:
                 return int(self.key)
@@ -119,23 +127,29 @@ class CipherFuncs(object):
 
         elif 'caesar' in frame:
             try:
-                assert int(self.key) < 26
+                assert 0 < int(self.key) < 26
             except AssertionError:
-                print 'Please enter an integer key (NB: should be less than the string length for best results)'
+                print 'Please enter an integer key (NB: should be less than the string length for best results)\n'
                 return self.key_get()
             else:
                 return int(self.key)
 
         elif 'substitution' in frame:
-            self.key = self.key.lower()
             try:
+                assert self.key.isalpha()
+            except AssertionError:
+                print '\nKey requires letters only (all 26 letters of the alphabet in non-alphabetical order)\n'
+                return self.key_get()
+
+            try:
+                self.key = self.key.lower()
                 assert len(self.key) == 26
 
                 # Determine if the key's contents are the same as the char set, followed by if the order is the same.
                 assert sorted(self.key) == list(string.ascii_lowercase)
                 assert self.key != list(string.ascii_lowercase)
             except AssertionError:
-                print 'Key requires all 26 letters of the alphabet in a non-alphabetical order'
+                print '\nKey requires all 26 letters of the alphabet in a non-alphabetical order\n'
                 if self.option == 'e':
                     rand_key = raw_input('Would you like a random key to be generated? (y/n): ')
                     if rand_key.startswith('y'):
@@ -156,13 +170,13 @@ class CipherFuncs(object):
                 key_b = random.randint(2, self.char_set_len)
                 if crypto_funcs.gcd(key_a, self.char_set_len) == 1:
                     self.key = key_a * self.char_set_len + key_b
-                    print 'Affine key is {}'.format(self.key)
+                    print 'Affine key is {}\n'.format(self.key)
                     return self.key
 
         elif 'substitution' in frame:
             self.key = list(string.ascii_lowercase)
             random.shuffle(self.key)
-            print 'Substitution key is {}'.format(''.join(self.key))
+            print 'Substitution key is {}\n'.format(''.join(self.key))
             return ''.join(self.key)
 
         elif 'vigenere' in frame:
@@ -170,7 +184,7 @@ class CipherFuncs(object):
             for i in range(len(self.text)/2):
                 self.key += string.ascii_lowercase[random.randint(0, 25)]
 
-            print 'Vigenere key is {}'.format(self.key)
+            print 'Vigenere key is {}\n'.format(self.key)
             return self.key
 
         elif 'transposition' in frame:
@@ -179,12 +193,12 @@ class CipherFuncs(object):
             r2 = len(self.text) / 2
             self.key = random.randint(r1, r2)
 
-            print 'Transposition key is {}'.format(self.key)
+            print 'Transposition key is {}\n'.format(self.key)
             return self.key
 
         elif 'caesar' in frame:
-            self.key = random.randint(0, CAESAR_MAX_KEY_SIZE)
-            print 'Caesar key is {}'.format(self.key)
+            self.key = random.randint(1, CAESAR_MAX_KEY_SIZE)
+            print 'Caesar key is {}\n'.format(self.key)
             return self.key
 
     def script_call(self):
@@ -261,7 +275,7 @@ def cmd_handles(*args):
     text = ""
 
     if len(args[0]) > 1:
-        word_num = len(args[0])  # everything in argv excluding the file name
+        word_num = len(args[0])
         for k in range(1, word_num):
             if k == (word_num - 1):
                 text += args[0][k]
