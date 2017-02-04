@@ -45,7 +45,7 @@ def encrypt(key_a, key_b, message):
             char_index = char_set.find(char)
             cipher_text += char_set[(char_index * key_a + key_b) % char_set_len]
         else:
-            cipher_text += char  # leave this character unencrypted
+            cipher_text += char
 
     return cipher_text
 

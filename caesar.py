@@ -17,7 +17,7 @@ def caesar(text='', option='', key=''):
     caesar_cipher = CipherFuncs(text, option, key)
     text, option, key = caesar_cipher.call_source()
 
-    cipher_text = encrypt_decrypt(text, option, key)  # cast str key to int
+    cipher_text = encrypt_decrypt(text, option, key)
     return clipboard(cipher_text)
 
 

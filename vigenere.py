@@ -28,9 +28,9 @@ def encrypt_decrypt(message, option, key):
     key_index = 0
 
     for char in message:
-        if char.lower() in char_set:  # alphabet provided is all lower case - used to search for capital letters
-            msg_let_index = char_set.find(char.lower())  # ex: '20' for t
-            key_let_index = char_set.find(key[key_index])  # ex: '2' for b
+        if char.lower() in char_set:
+            msg_let_index = char_set.find(char.lower())
+            key_let_index = char_set.find(key[key_index])
 
             if option.startswith('e'):
                 encode_text = (msg_let_index + key_let_index) % len(char_set)
