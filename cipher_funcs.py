@@ -304,3 +304,6 @@ def clipboard(cipher_text):
                 win32clipboard.CloseClipboard()
         else:
             return cipher_text
+    elif platform.system() == 'Linux':
+        print cipher_text
+
