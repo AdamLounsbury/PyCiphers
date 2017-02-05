@@ -6,7 +6,6 @@ import platform
 import random
 import string
 import sys
-import win32clipboard
 
 import crypto_funcs
 
@@ -295,6 +294,7 @@ def clipboard(cipher_text):
 
     if platform.system() == 'Windows':
         if 'multiple_encryption' not in frame:
+            import win32clipboard
             print cipher_text
             store_clip = raw_input('\nStore output in clipboard? (y/n): ')
             if store_clip.startswith('y'):
