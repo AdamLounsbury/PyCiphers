@@ -14,10 +14,6 @@ from crypto_funcs import gcd
 
 char_set = string.ascii_lowercase + '  \t\n'
 
-EXTRA_CHARS = 3
-TRANSPOS_START = 2
-VIGENERE_WORD_THRESH = 80
-
 
 class CodeBreak(object):
     """Base class for code breaking attempts."""
@@ -25,6 +21,10 @@ class CodeBreak(object):
     def __init__(self, cipher_text):
         self.cipher_text = cipher_text
         self.dict_words = {}
+
+        self.EXTRA_CHARS = 3
+        self.TRANSPOS_START = 2
+        self.VIGENERE_WORD_THRESH = 80
 
     def code_break(self):
         """Take the instantiated cipher text and attempt all supported decryption attempts sequentially
@@ -90,7 +90,7 @@ class CodeBreak(object):
     def caesar_brute(self):
         """Caesar cipher decryption on each possible caesar cipher key."""
 
-        for key in range(len(char_set) - EXTRA_CHARS):
+        for key in range(len(char_set) - self.EXTRA_CHARS):
             decrypted_text = caesar.encrypt_decrypt(self.cipher_text, 'd', key)
             if self.text_comparison(decrypted_text):
                 valid_message = possible_decryption(key, decrypted_text)
@@ -102,7 +102,7 @@ class CodeBreak(object):
     def transposition_brute(self):
         """Transposition cipher decryption on each possible transposition cipher key."""
 
-        for key in range(TRANSPOS_START, len(self.cipher_text) - 1):
+        for key in range(self.TRANSPOS_START, len(self.cipher_text) - 1):
             decrypted_text = transposition.encrypt_decrypt(self.cipher_text, 'd', key)
             if self.text_comparison(decrypted_text, 90):
                 valid_message = possible_decryption(key, decrypted_text)
@@ -120,7 +120,7 @@ class CodeBreak(object):
         def vigenere_dict_check(key):
             """Present the user with a candidate decryption string if enough English words were detected."""
 
-            if self.text_comparison(decrypted_text, VIGENERE_WORD_THRESH):
+            if self.text_comparison(decrypted_text, self.VIGENERE_WORD_THRESH):
                 valid_message = possible_decryption(key, decrypted_text)
                 if valid_message:
                     # Since the decryption was successful, break the loop.
