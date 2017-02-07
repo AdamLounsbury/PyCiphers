@@ -72,7 +72,7 @@ class CodeBreak(object):
         # Return the percentage of words in decryption that matched English words present in the dictionary.
         return percent_identified
 
-    def text_comparison(self, decrypted_text, word_threshold=65, letter_threshold=80):
+    def text_comparison(self, decrypted_text, word_threshold=75, letter_threshold=80):
         """Determine if the number of english words identified exceeds a certain threshold value to avoid presenting
         the user with an abundance of false-positive results. Also determine if there are too many symbols present
         in the string.
@@ -117,6 +117,9 @@ class CodeBreak(object):
          case) for each word.
         """
 
+        # For checking case permutations, have a counter so that the user can see their progress.
+        permutation_counter = 0
+
         def vigenere_dict_check(key):
             """Present the user with a candidate decryption string if enough English words were detected."""
 
@@ -134,13 +137,25 @@ class CodeBreak(object):
                 decrypted_text = vigenere.encrypt_decrypt(self.cipher_text, 'd', word)
                 if vigenere_dict_check(word):
                     break
+
+        # If the first dictionary search fails, try capitalizing the first letter of each word.
+        for word in self.dict_words:
+            if not perm_attempt:
+                decrypted_text = vigenere.encrypt_decrypt(self.cipher_text, 'd', word.title())
+                if vigenere_dict_check(word.title()):
+                    break
             else:
-                # If no key was found using the original dictionary, attempt case permutations.
+                # If no key was found using the original dictionary, attempt all case permutations.
                 words = map(''.join, itertools.product(*((c.upper(), c.lower()) for c in word)))
+
                 for permutation in words:
                     decrypted_text = vigenere.encrypt_decrypt(self.cipher_text, 'd', permutation)
                     if vigenere_dict_check(permutation):
                         break
+                permutation_counter += 1
+
+                # Display the number of words permuted thus far in the loop, along with the current word.
+                print '\r{0}/{1}'.format(permutation_counter, len(self.dict_words)), word + ' ' * 10, '\r',
         else:
             print '\nNo success with standard Vigenere dictionary attack.'
             print 'Would you like to try again using all case permutations of each word in the dictionary? (y/n)'
