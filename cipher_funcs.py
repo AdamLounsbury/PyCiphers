@@ -9,8 +9,6 @@ import sys
 
 import crypto_funcs
 
-CAESAR_MAX_KEY_SIZE = 25
-
 
 class CipherFuncs(object):
     """Base class for cipher-related functions, including shell/terminal handling and clipboard functionality."""
@@ -21,6 +19,8 @@ class CipherFuncs(object):
         self.key = key
         self.char_set = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#$%&()*+,-./:;<=>?@[]^_`{|}~'
         self.char_set_len = len(self.char_set)
+        
+        self.CAESAR_MAX_KEY_SIZE = 25
 
     def get_message(self):
         """Get text that is to be processed via encryption/decryption."""
@@ -196,7 +196,7 @@ class CipherFuncs(object):
             return self.key
 
         elif 'caesar' in frame:
-            self.key = random.randint(1, CAESAR_MAX_KEY_SIZE)
+            self.key = random.randint(1, self.CAESAR_MAX_KEY_SIZE)
             print 'Caesar key is {}\n'.format(self.key)
             return self.key
 
