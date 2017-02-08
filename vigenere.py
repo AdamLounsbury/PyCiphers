@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# ACL 2016 - alounsbu@alumni.uwo.ca
+# ACL 2017 - alounsbu@alumni.uwo.ca
 
 import string
 import sys
