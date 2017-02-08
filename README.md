@@ -41,3 +41,8 @@ cg orrilyaspp thcoyo
 
 # To-do
 * Implement set-up
+
+# Acknowledgements
+
+- The dictionary I used was modified from the '20k.txt' file in https://github.com/first20hours/google-10000-english
+- Thanks to Neal Stephenson's amazing book "Cryptonomicon" and Al Sweigart for sparking my interest in Cryptography!
