@@ -12,7 +12,7 @@ Implemented ciphers include:
 
 # How to use
 
-Run `./main.py` from a terminal for a user-friendly interface. Each cipher may also be executed independently in the python shell or from a terminal.
+Run `main.py` from a terminal for a user-friendly interface. Each cipher may also be executed independently in the python shell or from a terminal.
 
 Examples:
 
