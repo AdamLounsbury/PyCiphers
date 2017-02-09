@@ -12,7 +12,9 @@ Implemented ciphers include:
 
 # How to use
 
-Run `main.py` from a terminal for a user-friendly interface. Each cipher may also be executed independently in the python shell or from a terminal.
+Run `main.py` from a terminal to see a menu of possible operations. Current options include encryption/decryption, brute force decryption, and multiple encryption.
+
+Alternatively, each cipher may be executed independently in the Python shell or from a terminal.
 
 Examples:
 
@@ -38,9 +40,6 @@ Enter an encryption/decryption key: 6
 cg orrilyaspp thcoyo
 ```
 
-
-# To-do
-* Implement set-up
 
 # Acknowledgements
 
